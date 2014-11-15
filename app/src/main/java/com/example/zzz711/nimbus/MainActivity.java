@@ -6,15 +6,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CheckBox;
 
 
 public class MainActivity extends Activity {
-
+    CheckBox checkUmbrella, checkCoat, checkSunscreen, checkSnow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        checkUmbrella = (CheckBox) findViewById(R.id.checkUmbrella);
+        checkCoat = (CheckBox) findViewById(R.id.checkCoat);
+        checkSunscreen = (CheckBox) findViewById(R.id.checkSunscreen);
+        checkSnow = (CheckBox) findViewById(R.id.checkSnow);
 
         Context context = getApplicationContext();//not which context to get
 
