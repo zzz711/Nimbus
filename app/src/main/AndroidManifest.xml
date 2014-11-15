@@ -16,6 +16,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name="com.example.zzz711.nimbus.WeatherPing"
+            android:icon="@drawable/icon"
+            android:label="@string/service_name"
+            >
+        </service>
+        <service android:name=".WeatherPing" />
+
     </application>
 
 </manifest>
