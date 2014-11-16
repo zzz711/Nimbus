@@ -37,15 +37,15 @@ public class WeatherPing extends Service {
     protected abstract void onHandleIntent(Intent intent){}*/
 
     @Override
-    public ComponentName startService(Intent intent){
+  /*  public ComponentName startService(Intent intent){
         //need return statement
         //onHandleIntent(intent);
         serviceIntent = intent;
         onCreate();
 
-    }
+    }*/
 
-    @Override
+    //@Override
     public void onCreate(){
         onStartCommand(serviceIntent, 0, 0); //start id may not be 0
 

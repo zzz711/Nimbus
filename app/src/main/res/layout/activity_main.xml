@@ -11,7 +11,7 @@
 
         <TableRow>
             <CheckBox
-                android:layout_width="wrap_content"
+                android:layout_width="10dp"
                 android:layout_height="wrap_content"
                 android:text="Umbrella"
                 android:id="@+id/checkUmbrella"
@@ -27,13 +27,14 @@
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/checkUmbrella"
                 android:layout_toEndOf="@+id/checkUmbrella"
-                android:layout_marginLeft="41dp"
-                android:src="@drawable/umbrella_icon" />
+                android:layout_alignLeft="@id/checkUmbrella"
+                android:src="@drawable/umbrella_icon"
+                />
         </TableRow>
 
         <TableRow>
             <CheckBox
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Coat"
                 android:id="@+id/checkCoat"
@@ -45,7 +46,7 @@
 
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageCoat"
                 android:layout_alignBottom="@+id/checkCoat"
@@ -56,7 +57,7 @@
 
         <TableRow>
             <CheckBox
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sunscreen"
                 android:id="@+id/checkSunscreen"
@@ -67,7 +68,7 @@
                 android:checked="false" />
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageSunscreen"
                 android:layout_alignTop="@+id/checkSunscreen"
@@ -78,7 +79,7 @@
 
         <TableRow>
             <CheckBox
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Snow"
                 android:id="@+id/checkSnow"
@@ -88,22 +89,23 @@
                 android:checked="false" />
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageSnow"
                 android:layout_alignTop="@+id/checkSnow"
-                android:layout_alignLeft="@+id/imageView"
-                android:layout_alignStart="@+id/imageView"
+                android:layout_alignLeft="@+id/imageSunscreen"
+                android:layout_alignStart="@+id/imageSunscreen"
                 android:src="@drawable/snow_icon" />
         </TableRow>
 
         <TableRow>
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/WWOcredit"
-                android:text="@string/Credit"
-                android:layout_alightLeft="@+id/imageView"/>
+                android:text="@string/Credit"/>
         </TableRow>
+
     </TableLayout>
+
 </ScrollView>

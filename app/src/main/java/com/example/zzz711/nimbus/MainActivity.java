@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
 
         Intent weatherPing = new Intent(context, WeatherPing.class);
         //weatherPing.putExtra()
-        context.startService(weatherPing);
+      //  context.startService(weatherPing);
     }
 
 
