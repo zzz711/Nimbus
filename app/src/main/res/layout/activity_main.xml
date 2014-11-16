@@ -13,7 +13,6 @@
             <CheckBox
                 android:layout_width="10dp"
                 android:layout_height="wrap_content"
-                android:text="Umbrella"
                 android:id="@+id/checkUmbrella"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
@@ -30,18 +29,21 @@
                 android:layout_alignLeft="@id/checkUmbrella"
                 android:src="@drawable/umbrella_icon"
                 />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Umbrella"
+                android:layout_marginLeft="5dp"/>
         </TableRow>
 
         <TableRow>
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Coat"
                 android:id="@+id/checkCoat"
                 android:layout_below="@+id/checkUmbrella"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-
                 android:checked="false" />
 
 
@@ -53,13 +55,18 @@
                 android:layout_alignLeft="@+id/imageUmbrella"
                 android:layout_alignStart="@+id/imageUmbrella"
                 android:src="@drawable/coat_icon" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Coat"
+                android:layout_marginLeft="5dp"/>
+
         </TableRow>
 
         <TableRow>
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sunscreen"
                 android:id="@+id/checkSunscreen"
                 android:layout_below="@+id/imageCoat"
                 android:layout_alignParentLeft="true"
@@ -74,6 +81,11 @@
                 android:layout_alignLeft="@+id/imageCoat"
                 android:layout_alignStart="@+id/imageCoat"
                 android:src="@drawable/sun_icon" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Sunscreen"
+                android:layout_marginLeft="5dp"/>
         </TableRow>
 
         <TableRow>
@@ -81,7 +93,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/checkSnow"
-                android:text="Snow"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
@@ -95,16 +106,27 @@
                 android:layout_alignLeft="@+id/imageSunscreen"
                 android:layout_alignStart="@+id/imageSunscreen"
                 android:src="@drawable/snow_icon" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Snow"
+                android:layout_marginLeft="5dp"/>
         </TableRow>
 
-        <TableRow>
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
             <TextView
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/WWOcredit"
-                android:text="@string/Credit"/>
+                android:layout_width="130dp"
+                android:layout_height="50dp"
+                android:id="@+id/WWOCredit"
+                android:Text="@string/Credit"
+                android:layout_column="2"
+                android:text="@string/Credit" />
         </TableRow>
 
     </TableLayout>
 
 </ScrollView>
+
