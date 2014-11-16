@@ -1,10 +1,15 @@
 package com.example.zzz711.nimbus;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,14 +36,10 @@ public class MainActivity extends Activity {
 
         sharedPref = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
 
-
-
         checkUmbrella = (CheckBox) findViewById(R.id.checkUmbrella);
         checkCoat = (CheckBox) findViewById(R.id.checkCoat);
         checkSunscreen = (CheckBox) findViewById(R.id.checkSunscreen);
         checkSnow = (CheckBox) findViewById(R.id.checkSnow);
-
-
 
         if (!sharedPref.contains(PREFERENCES)){
             editor = sharedPref.edit();
@@ -52,9 +53,12 @@ public class MainActivity extends Activity {
 
         Context context = getApplicationContext();//not which context to get
 
+        Log.d("","???");
+
         Intent weatherPing = new Intent(context, WeatherPing.class);
         //weatherPing.putExtra()
-      //  context.startService(weatherPing);
+
+        context.startService(weatherPing);
     }
 
 
@@ -129,5 +133,51 @@ public class MainActivity extends Activity {
         SharedPreferences.Editor editor1 = sharedPref.edit();
         editor1.putBoolean(snowKey, snowBool);
         editor1.apply();
+
+        buildNotification(3);
     }
+
+    public void Refresh(View view){
+        Context context = getApplicationContext();//not which context to get
+        Intent weatherPing = new Intent(context, WeatherPing.class);
+        context.startService(weatherPing);
+    }
+
+    public void buildNotification(int number){
+        Notification.Builder nb = new Notification.Builder(this);
+        switch(number){
+            case 0: //take an umbrella
+                Bitmap umbrella = BitmapFactory.decodeResource(getResources(), R.drawable.umbrella_icon_large);
+                nb.setLargeIcon(umbrella);
+                nb.setContentTitle("Umbrella");
+                nb.setContentText("Be sure to pack an umbrella!");
+                nb.setSmallIcon(R.drawable.umbrella_icon);
+                break;
+            case 1: //put on a jacket
+                Bitmap coat = BitmapFactory.decodeResource(getResources(), R.drawable.coat_icon_large);
+                nb.setLargeIcon(coat);
+                nb.setContentTitle("Jacket");
+                nb.setContentText("It's chilly outside, so wear a jacket.");
+                nb.setSmallIcon(R.drawable.coat_icon);
+                break;
+            case 2: //put on sunscreen
+                Bitmap sunscreen = BitmapFactory.decodeResource(getResources(), R.drawable.sun_icon_large);
+                nb.setLargeIcon(sunscreen);
+                nb.setContentTitle("Sunscreen");
+                nb.setContentText("Put on sunscreen today!");
+                nb.setSmallIcon(R.drawable.sun_icon);
+                break;
+            case 3: //put on a winter coat
+                Bitmap snow = BitmapFactory.decodeResource(getResources(), R.drawable.snow_icon_large);
+                nb.setLargeIcon(snow);
+                nb.setContentTitle("Coat");
+                nb.setContentText("It's cold outside! Wear a winter coat and maybe some gloves.");
+                nb.setSmallIcon(R.drawable.snow_icon);
+                break;
+        }
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(number, nb.build());
+    }
+
 }
+
