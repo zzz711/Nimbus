@@ -3,13 +3,15 @@
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    android:background="@drawable/bg"
+    android:fillViewport="false">
 
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <TableRow>
+        <TableRow android:paddingBottom="20.0sp">
             <CheckBox
                 android:layout_width="10dp"
                 android:layout_height="wrap_content"
@@ -36,7 +38,7 @@
                 android:layout_marginLeft="5dp"/>
         </TableRow>
 
-        <TableRow>
+        <TableRow android:paddingBottom="20.0sp">
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -63,7 +65,7 @@
 
         </TableRow>
 
-        <TableRow>
+        <TableRow android:paddingBottom="20.0sp">
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,7 +90,7 @@
                 android:layout_marginLeft="5dp"/>
         </TableRow>
 
-        <TableRow>
+        <TableRow android:paddingBottom="250.0sp">
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -118,8 +120,8 @@
             android:layout_height="fill_parent">
 
             <TextView
-                android:layout_width="130dp"
-                android:layout_height="50dp"
+                android:layout_width="230.0dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/WWOCredit"
                 android:Text="@string/Credit"
                 android:layout_column="2"
