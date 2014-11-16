@@ -17,7 +17,7 @@ public interface OnlineWeatherRetriever {
     //  &num_of_days=5
     //  &key=9cbd89fade0170bb8102ed4296968
 
-    JsonWeatherResponse weather = getWeather(@Path("location") String location, @Path("days") int days, @Path("keys") String key);
+    JsonWeatherResponse getWeather(@Path("location") String location, @Path("days") int days, @Path("keys") String key);
 }
 
 
