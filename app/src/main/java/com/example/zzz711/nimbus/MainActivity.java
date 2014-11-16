@@ -6,11 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
     CheckBox checkUmbrella, checkCoat, checkSunscreen, checkSnow;
+    boolean umbrellaBool = true;
+    boolean coatBool, sunscreenBool, snowBool = false; //booleans to
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,5 +54,45 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    //TODO save preferences
+    public void umbrellaClick(View view){
+        if(umbrellaBool){
+            umbrellaBool = false;
+        }
+        else{
+            umbrellaBool = true;
+        }
+
+    }
+
+    public void coatClick(View view){
+        if(!coatBool){
+            coatBool = true;
+        }
+        else{
+            coatBool = false;
+        }
+    }
+
+    public void sunscreenClick(View view){
+        if(!sunscreenBool){
+            sunscreenBool = true;
+        }
+        else{
+            sunscreenBool = false;
+        }
+    }
+
+    public void snowClick(View view){
+        if(!snowBool){
+            snowBool = true;
+        }
+        else{
+            snowBool = false;
+        }
+
     }
 }

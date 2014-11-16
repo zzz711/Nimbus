@@ -19,7 +19,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:checked="true" />
+                android:checked="true"
+                android:onClick="umbrellaClick"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -34,6 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/textUmbrella"
                 android:text="Umbrella"
                 android:layout_marginLeft="5dp"/>
         </TableRow>
@@ -46,7 +48,8 @@
                 android:layout_below="@+id/checkUmbrella"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:checked="false" />
+                android:checked="false"
+                android:onClick="coatClick"/>
 
 
             <ImageView
@@ -60,6 +63,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/textCoat"
                 android:text="Coat"
                 android:layout_marginLeft="5dp"/>
 
@@ -73,7 +77,8 @@
                 android:layout_below="@+id/imageCoat"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:checked="false" />
+                android:checked="false"
+                android:onClick="sunscreenClick"/>
 
             <ImageView
                 android:layout_width="match_parent"
@@ -86,6 +91,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/textSunscreen"
                 android:text="Sunscreen"
                 android:layout_marginLeft="5dp"/>
         </TableRow>
@@ -98,7 +104,8 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:checked="false" />
+                android:checked="false"
+                android:onClick="snowClick"/>
 
             <ImageView
                 android:layout_width="match_parent"
@@ -111,6 +118,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/textSnow"
                 android:text="Snow"
                 android:layout_marginLeft="5dp"/>
         </TableRow>
