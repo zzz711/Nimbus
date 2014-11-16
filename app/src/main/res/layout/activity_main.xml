@@ -35,19 +35,19 @@
         <TableRow>
             <CheckBox
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Coat"
                 android:id="@+id/checkCoat"
                 android:layout_below="@+id/checkUmbrella"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="41dp"
+
                 android:checked="false" />
 
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:id="@+id/imageCoat"
                 android:layout_alignBottom="@+id/checkCoat"
                 android:layout_alignLeft="@+id/imageUmbrella"
@@ -64,7 +64,6 @@
                 android:layout_below="@+id/imageCoat"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="48dp"
                 android:checked="false" />
 
             <ImageView
@@ -81,8 +80,8 @@
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Snow"
                 android:id="@+id/checkSnow"
+                android:text="Snow"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
