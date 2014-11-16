@@ -12,6 +12,7 @@ public class JsonWeatherResponse {
 
     class current_condition{ //Information about the current weather.
         public int weatherCode; //int that provides verbose weather information
+
     }
 
     class weather{ //Information about the weather forecast.
@@ -22,8 +23,8 @@ public class JsonWeatherResponse {
     class hourly{ //Information about hourly weather conditions.
         public int windspeedMiles; //Wind speed in miles per hour
         public int cloudcover; //Cloud cover amount in integer percentage
-        public int chanceofrain; //Chance of rain (precipitation) in percentage
         public int chanceofsunny; //Chance of being sunny in percentage
         public int chanceofsnow; //Chance of snow in percentage
     }
+
 }
