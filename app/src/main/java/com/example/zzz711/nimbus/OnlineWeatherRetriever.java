@@ -1,4 +1,8 @@
 package com.example.zzz711.nimbus;
+
+import retrofit.http.GET;
+import retrofit.http.Path;
+
 /**
  * @author Margo
  * @version 11/15/2014
