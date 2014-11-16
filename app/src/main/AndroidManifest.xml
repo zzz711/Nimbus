@@ -17,9 +17,11 @@
             </intent-filter>
         </activity>
 
+        <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
         <service
-            android:name="com.example.zzz711.nimbus.WeatherPing"
-            >
+            android:name="com.example.zzz711.nimbus.WeatherPing">
         </service>
 
 

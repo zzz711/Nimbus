@@ -123,7 +123,6 @@
                 android:layout_width="230.0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/WWOCredit"
-                android:Text="@string/Credit"
                 android:layout_column="2"
                 android:text="@string/Credit" />
         </TableRow>
