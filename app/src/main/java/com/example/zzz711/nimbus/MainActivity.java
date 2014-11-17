@@ -89,52 +89,81 @@ public class MainActivity extends Activity {
     public void umbrellaClick(View view){
         if(umbrellaBool){
             umbrellaBool = false;
+
+            SharedPreferences.Editor editor1 = sharedPref.edit();
+            editor1.putBoolean(umbrellaKey, umbrellaBool);
+            editor1.apply();
+
         }
         else{
             umbrellaBool = true;
+
+            SharedPreferences.Editor editor1 = sharedPref.edit();
+            editor1.putBoolean(umbrellaKey, umbrellaBool);
+            editor1.apply();
+
+            buildNotification(0);
         }
 
-        SharedPreferences.Editor editor1 = sharedPref.edit();
-        editor1.putBoolean(umbrellaKey, umbrellaBool);
-        editor1.apply();
     }
 
     public void coatClick(View view){
         if(!coatBool){
             coatBool = true;
+
+            SharedPreferences.Editor editor1 = sharedPref.edit();
+            editor1.putBoolean(coatKey, coatBool);
+            editor1.apply();
+            buildNotification(1);
         }
         else{
             coatBool = false;
+
+            SharedPreferences.Editor editor1 = sharedPref.edit();
+            editor1.putBoolean(coatKey, coatBool);
+            editor1.apply();
         }
-        SharedPreferences.Editor editor1 = sharedPref.edit();
-        editor1.putBoolean(coatKey, coatBool);
-        editor1.apply();
+
     }
 
     public void sunscreenClick(View view){
         if(!sunscreenBool){
             sunscreenBool = true;
+
+            SharedPreferences.Editor editor1 = sharedPref.edit();
+            editor1.putBoolean(sunscreenKey, sunscreenBool);
+            editor1.apply();
+
+            buildNotification(2);
         }
         else{
             sunscreenBool = false;
+
+            SharedPreferences.Editor editor1 = sharedPref.edit();
+            editor1.putBoolean(sunscreenKey, sunscreenBool);
+            editor1.apply();
         }
-        SharedPreferences.Editor editor1 = sharedPref.edit();
-        editor1.putBoolean(sunscreenKey, sunscreenBool);
-        editor1.apply();
+
     }
 
     public void snowClick(View view){
         if(!snowBool){
             snowBool = true;
+
+            SharedPreferences.Editor editor1 = sharedPref.edit();
+            editor1.putBoolean(snowKey, snowBool);
+            editor1.apply();
+
+            buildNotification(3);
         }
         else{
             snowBool = false;
-        }
-        SharedPreferences.Editor editor1 = sharedPref.edit();
-        editor1.putBoolean(snowKey, snowBool);
-        editor1.apply();
 
-        buildNotification(3);
+            SharedPreferences.Editor editor1 = sharedPref.edit();
+            editor1.putBoolean(snowKey, snowBool);
+            editor1.apply();
+        }
+
     }
 
     public void Refresh(View view){
