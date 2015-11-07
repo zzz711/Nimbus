@@ -18,11 +18,7 @@ import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.cookie.BasicClientCookie;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,9 +39,6 @@ import java.util.List;
 
 import javax.security.auth.callback.Callback;
 
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-
 /**
  * @author Margo
  * @version 11/15/2014
@@ -54,7 +47,8 @@ import retrofit.RetrofitError;
  */
 public class WeatherPing extends Service implements LocationListener{
     Intent serviceIntent;
-    //String weatherUrl = "api.worldweatheronline.com/free/v2/weather.ashx?q=45219&format=json&num_of_days=1&date=2014-11-17&key=9cbd89fade0170bb8102ed4296968";
+    //String weatherUrl = "api.worldweatheronline.com/free/v2/weather.ashx?q=45219&format=json&num_of_days=1&date=2014-11-17&key=";
+    //String weatherUrl = http://api.wunderground.com/api//
     protected LocationManager locationManager;
     private final Context currContext = this.getBaseContext();
     private String apiKey = ""; //TODO: add, but don't commit key
@@ -64,6 +58,7 @@ public class WeatherPing extends Service implements LocationListener{
     double latitude;
     double longitude;
     Context context;
+    String wuUrlMiddle = "";
 
     // constructor for WeatherPing service
     public WeatherPing(){
@@ -111,7 +106,7 @@ public class WeatherPing extends Service implements LocationListener{
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(isConnected()){
             getLocation();
-            new HttpAsyncTask().execute("http://api.worldweatheronline.com/free/v2/weather.ashx?q=45219&format=json&num_of_days=1&date=today");
+            new HttpAsyncTask().execute("http://api.wunderground.com/api/apikey/conditions/q/CA/San_Francisco.json"); //put real api in
             //GET();
         }
         return Service.START_NOT_STICKY;
@@ -158,7 +153,7 @@ public class WeatherPing extends Service implements LocationListener{
         boolean GPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
         if (!GPSEnabled) {
-            // TODO: what if they don't have GPS or internet?
+            // TODO: what if they don't have GPS enabled?
         } else {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
                     MIN_TIME_BW_UPDATES,
@@ -194,80 +189,20 @@ public class WeatherPing extends Service implements LocationListener{
         }
     }
 
-    public String GET(String url){
+    public String GET(String url){ //not sure if I need this anymore. It was meant to handle a different weather api, but was never finished
         try {
-        HttpClient httpClient = new DefaultHttpClient();
-            CookieManager cookieManager = new CookieManager();
-            cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
-            BasicClientCookie netscapeCookie = new BasicClientCookie("name", "value");
-            netscapeCookie.setVersion(0);
-            netscapeCookie.setDomain(".mycompany.com");
-            netscapeCookie.setPath("/");
 
 
-            HttpResponse httpResponse = httpClient.execute(new HttpGet(url));
-
-      InputStream inputStream = httpResponse.getEntity().getContent();
-
-            convertInputStreamToString(inputStream);
-
-
-           // JSONObject obj = new JSONObject("api.worldweatheronline.com/free/v2/weather.ashx?q=45219&format=json&num_of_days=1&date=today&key=9cbd89fade0170bb8102ed4296968");
-
-           // String tempF = obj.getString("FeelsLikeF");
-           // Log.d("", tempF);
-
-
-       /* RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint("api.worldweatheronline.com/")
-                .build();
-
-        OnlineWeatherRetriever onlineWeatherRetriever = adapter.create(OnlineWeatherRetriever.class);
-
-        onlineWeatherRetriever.getWeather(location.toString(), 1, "9cbd89fade0170bb8102ed4296968");
-
-        String result = "";
-        try {
-        URL url = new URL("http://api.worldweatheronline.com/free/v2/weather.ashx?q=45219&format=json&num_of_days=1&date=2014-11-17&key=9cbd89fade0170bb8102ed4296968");
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-
-
-            InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
-            result =  convertInputToString(inputStream);
-
-           HttpClient httpClient = new DefaultHttpClient();
-
-            HttpResponse httpResponse = httpClient.execute(new HttpGet(url));
-
-            inputStream = httpResponse.getEntity().getContent();
-
-
-            if(inputStream != null){
-                result = convertInputToString(inputStream);
-                Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
-            }
-
-            else {
-                Log.d(":", "Input is null");
-                //TODO add handler for when there is no information
-            }
-            urlConnection.disconnect();
 
         }
         catch (Exception e){
-            Log.d("InputStream", e.getLocalizedMessage());
-        }
-
-
-        return  result;*/
-        }
-        catch (IOException e){
+            e.printStackTrace();
         }
 
         return " ";
     }
 
-    private static String convertInputStreamToString(InputStream inputStream) throws IOException{
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException{ //converts JSON to a string
         BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
         String line = "";
         String result = "";
@@ -288,7 +223,7 @@ public class WeatherPing extends Service implements LocationListener{
         return null;
     }
 
-    public void buildNotification(int number){
+    public void buildNotification(int number){ //create notification
         Notification.Builder nb = new Notification.Builder(this);
         switch(number){
             case 0: //take an umbrella
@@ -325,10 +260,11 @@ public class WeatherPing extends Service implements LocationListener{
     }
 
 
-    private class HttpAsyncTask extends AsyncTask <String, Void, String> {
+    private class HttpAsyncTask extends AsyncTask <String, Void, JSONObject> { //get JSON
         @Override
         protected String doInBackground(String... urls) {
-            return GET(urls[0]);
+
+
         }
 
         @Override

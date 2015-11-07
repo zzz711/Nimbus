@@ -168,11 +168,11 @@ public class MainActivity extends Activity {
 
     public void Refresh(View view){
         Context context = getApplicationContext();//not which context to get
-        Intent weatherPing = new Intent(context, WeatherPing.class);
-        context.startService(weatherPing);
+       // Intent weatherPing = new Intent(context, WeatherPing.class);
+     //   context.startService(weatherPing);
     }
 
-    public void buildNotification(int number){
+    public void buildNotification(int number){ //final version will not push notification every time
         Notification.Builder nb = new Notification.Builder(this);
         switch(number){
             case 0: //take an umbrella
