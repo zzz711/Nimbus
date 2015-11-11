@@ -18,8 +18,6 @@ import java.util.List;
 public class Prefferences extends Activity implements AdapterView.OnItemSelectedListener{
     private SQLiteDatabase database;
     private NimbusDB nimbusDB;
-    private String[] allCols = {nimbusDB.COLUMN_ID, nimbusDB.COLUMN_PROFILE_NAME, NimbusDB.COLUMN_RAIN_CHANCE, NimbusDB.COLUMN_COAT_TEMP,
-        NimbusDB.COLUMN_SUNSCREEN_COND, NimbusDB.COLUMN_SNOW_CHANCE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,11 +95,42 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
     public void buttonSave(View view) {
         //get values from the edit text and write them to the sqlite database
         EditText editTextProfile = (EditText) findViewById(R.id.editTextProfile);
+        Context context = getBaseContext();
 
-        if (editTextProfile.getText().toString().equals("Default")) {
+        nimbusDB = new NimbusDB(context);
+        database = nimbusDB.getWritableDatabase();
+
+        String profile = editTextProfile.getText().toString();
+
+        if (profile.equals(null) || profile.equals("Default")) {
             finish();
-        } else {
+        }
 
+        else {
+            Cursor cursor = database.rawQuery("Select * From " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.COLUMN_PROFILE_NAME + " = " + profile + ";", null);
+            EditText umbrellaET = (EditText) findViewById(R.id.editTextUmbrella);
+            int umbrella = Integer.parseInt(umbrellaET.toString());
+
+            int coat = Integer.parseInt(findViewById(R.id.editTextCoat).toString());
+
+            String sunScreen = findViewById(R.id.editTextSunscreen).toString();
+
+            int snow = Integer.parseInt(findViewById(R.id.editTextSnow).toString());
+
+
+            if(cursor == null){ //may not be the correct
+
+
+                database.execSQL("Insert Into " + nimbusDB.TABLE_PROFILES + " Values( " + umbrella + ", " + coat + ", " + sunScreen + ", " + snow + ", 1);");
+            }
+            else{
+                database.execSQL("Update " + nimbusDB.TABLE_PROFILES + "Set " +nimbusDB.COLUMN_RAIN_CHANCE + " = " + umbrella +", " + nimbusDB.COLUMN_COAT_TEMP + " = "
+                + coat + ", " + nimbusDB.COLUMN_SUNSCREEN_COND + " = " + sunScreen + ", " + nimbusDB.COLUMN_SNOW_CHANCE + " = " + snow + ", " + nimbusDB.COLUMN_SELECTED + " = 1);");
+            }
+
+            database.execSQL("Update " + nimbusDB.TABLE_PROFILES + "Set " + nimbusDB.COLUMN_SELECTED  +" = 0 Where " + nimbusDB.COLUMN_SELECTED + " = 1 AND " + nimbusDB.COLUMN_PROFILE_NAME + " != " + profile + ";");
+
+            finish();
         }
     }
 }

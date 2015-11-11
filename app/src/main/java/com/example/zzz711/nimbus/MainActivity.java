@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -28,6 +29,9 @@ public class MainActivity extends Activity {
     public static final String sunscreenKey = "sunscreenKey";
     public static final String snowKey = "snowKey";
     SharedPreferences sharedPref;
+    private SQLiteDatabase database;
+    private NimbusDB nimbusDB;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +89,7 @@ public class MainActivity extends Activity {
     }
 
 
-    //TODO save preferences
+    //TODO save preferences in a new table in the database
     public void umbrellaClick(View view){
         if(umbrellaBool){
             umbrellaBool = false;
