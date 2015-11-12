@@ -106,7 +106,7 @@ public class MainActivity extends Activity {
             editor1.putBoolean(umbrellaKey, umbrellaBool);
             editor1.apply();
 
-            buildNotification(0);
+       //     buildNotification(0);
         }
 
     }
@@ -118,7 +118,7 @@ public class MainActivity extends Activity {
             SharedPreferences.Editor editor1 = sharedPref.edit();
             editor1.putBoolean(coatKey, coatBool);
             editor1.apply();
-            buildNotification(1);
+        //    buildNotification(1);
         }
         else{
             coatBool = false;
@@ -138,7 +138,7 @@ public class MainActivity extends Activity {
             editor1.putBoolean(sunscreenKey, sunscreenBool);
             editor1.apply();
 
-            buildNotification(2);
+          //  buildNotification(2);
         }
         else{
             sunscreenBool = false;
@@ -158,7 +158,7 @@ public class MainActivity extends Activity {
             editor1.putBoolean(snowKey, snowBool);
             editor1.apply();
 
-            buildNotification(3);
+            //buildNotification(3);
         }
         else{
             snowBool = false;
@@ -176,7 +176,7 @@ public class MainActivity extends Activity {
      //   context.startService(weatherPing);
     }
 
-    public void buildNotification(int number){ //final version will not push notification every time
+   /* public void buildNotification(int number){ //final version will not push notification every time
         Notification.Builder nb = new Notification.Builder(this);
         switch(number){
             case 0: //take an umbrella
@@ -210,7 +210,7 @@ public class MainActivity extends Activity {
         }
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(number, nb.build());
-    }
+    }*/
 
 }
 

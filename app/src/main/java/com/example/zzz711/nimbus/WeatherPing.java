@@ -7,6 +7,7 @@ import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -19,6 +20,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,8 +49,7 @@ import javax.security.auth.callback.Callback;
  */
 public class WeatherPing extends Service implements LocationListener{
     Intent serviceIntent;
-    //String weatherUrl = "api.worldweatheronline.com/free/v2/weather.ashx?q=45219&format=json&num_of_days=1&date=2014-11-17&key=";
-    //String weatherUrl = http://api.wunderground.com/api//
+    String weatherUrl = "http://api.worldweatheronline.com/free/v2/weather.ashx?key=";
     protected LocationManager locationManager;
     private final Context currContext = this.getBaseContext();
     private String apiKey = ""; //TODO: add, but don't commit key
@@ -58,7 +59,8 @@ public class WeatherPing extends Service implements LocationListener{
     double latitude;
     double longitude;
     Context context;
-    String wuUrlMiddle = "";
+    private SQLiteDatabase database;
+    private NimbusDB nimbusDB;
 
     // constructor for WeatherPing service
     public WeatherPing(){
@@ -106,7 +108,8 @@ public class WeatherPing extends Service implements LocationListener{
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(isConnected()){
             getLocation();
-            new HttpAsyncTask().execute("http://api.wunderground.com/api/apikey/conditions/q/CA/San_Francisco.json"); //put real api in
+            String url = weatherUrl + apiKey + "&q="+ String.valueOf(latitude) + "," + String.valueOf(longitude) + "&num_of_days=2&tp=3&format=json";
+            new HttpAsyncTask(url, this).execute(url); //put real api in
             //GET();
         }
         return Service.START_NOT_STICKY;
@@ -155,26 +158,31 @@ public class WeatherPing extends Service implements LocationListener{
         if (!GPSEnabled) {
             // TODO: what if they don't have GPS enabled?
         } else {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-                    MIN_TIME_BW_UPDATES,
-                    MIN_DISTANCE_CHANGE_FOR_UPDATES,
-                    this);
-            Log.d("Network", "Network");
-            if (locationManager != null) {
-                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                setLatLong();
-            }
-            if (location == null) {
-                locationManager.requestLocationUpdates(
-                        LocationManager.GPS_PROVIDER,
+            try {
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
                         MIN_TIME_BW_UPDATES,
                         MIN_DISTANCE_CHANGE_FOR_UPDATES,
                         this);
-                Log.d("GPS Enabled", "GPS Enabled");
+                Log.d("Network", "Network");
                 if (locationManager != null) {
-                    location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                     setLatLong();
                 }
+                if (location == null) {
+                    locationManager.requestLocationUpdates(
+                            LocationManager.GPS_PROVIDER,
+                            MIN_TIME_BW_UPDATES,
+                            MIN_DISTANCE_CHANGE_FOR_UPDATES,
+                            this);
+                    Log.d("GPS Enabled", "GPS Enabled");
+                    if (locationManager != null) {
+                        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        setLatLong();
+                    }
+                }
+            }
+            catch (SecurityException e){
+                Toast.makeText(getApplicationContext(),"In order for this app to function you must give it location access", Toast.LENGTH_LONG); //too long?
             }
         }
         return location;
@@ -214,6 +222,21 @@ public class WeatherPing extends Service implements LocationListener{
         inputStream.close();
         return result;
 
+    }
+
+    public void setJSON(String json){
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONObject forecast = jsonObject.getJSONArray("weather").getJSONObject(0);
+
+
+
+
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     //TODO add public boolean stopService(Intent name)
@@ -260,23 +283,47 @@ public class WeatherPing extends Service implements LocationListener{
     }
 
 
-    private class HttpAsyncTask extends AsyncTask <String, Void, JSONObject> { //get JSON
+    private class HttpAsyncTask extends AsyncTask <String, Void, String> { //get JSON
+        String url;
+        String json;
+        WeatherPing weatherPing;
+
+        public HttpAsyncTask(String address, WeatherPing ping){
+            this.url = address;
+            this.weatherPing = ping;
+        }
+
+
         @Override
         protected String doInBackground(String... urls) {
+            StringBuilder result = new StringBuilder();
 
+
+            try {
+
+                URL url = new URL(urls.toString());
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+
+                urlConnection.disconnect();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+            return  result.toString();
 
         }
 
         @Override
         protected void onPostExecute(String result) {
-           // Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
-            try {
-                JSONObject obj = new JSONObject(result);
-
-                //obj.getString()
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            this.weatherPing.setJSON(result);
         }
     }
 
