@@ -7,6 +7,7 @@ import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -61,6 +62,15 @@ public class WeatherPing extends Service implements LocationListener{
     Context context;
     private SQLiteDatabase database;
     private NimbusDB nimbusDB;
+    int rainPercent = 0;
+    int coatTemp = 0;
+    String sunCond = "";
+    int snowPercent = 0;
+
+    int rainCB = 0;
+    int coatCB = 0;
+    int sunCB = 0;
+    int snowCB = 0;
 
     // constructor for WeatherPing service
     public WeatherPing(){
@@ -101,6 +111,10 @@ public class WeatherPing extends Service implements LocationListener{
         Intent weatherPing = new Intent(context, WeatherPing.class);
         startService(weatherPing);
 
+        nimbusDB = new NimbusDB(context);
+        database = nimbusDB.getReadableDatabase();
+
+       readDB();
 
     }
 
@@ -229,14 +243,26 @@ public class WeatherPing extends Service implements LocationListener{
             JSONObject jsonObject = new JSONObject(json);
             JSONObject forecast = jsonObject.getJSONArray("weather").getJSONObject(0);
 
+            if(forecast.getInt("chanceofrain") > rainPercent && rainCB == 1){
+                buildNotification(0);
+            }
 
+            if(forecast.getInt("tempF") < coatTemp && coatCB == 1){
+                buildNotification(1);
+            }
 
-
-
+            if(forecast.getJSONArray("weatherDesc").getJSONObject(0).getString("value").equals(sunCond) && sunCB == 1){
+                buildNotification(2);
+            }
+            if(forecast.getInt("chanceofsnow") > snowPercent && snowCB == 1) {
+                buildNotification(3);
+            }
         }
-        catch (Exception e){
+        catch (JSONException e){
             e.printStackTrace();
+
         }
+
     }
 
     //TODO add public boolean stopService(Intent name)
@@ -280,6 +306,21 @@ public class WeatherPing extends Service implements LocationListener{
         }
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(number, nb.build());
+    }
+
+    private void readDB(){
+        Cursor profileCursor = database.rawQuery("Select * From " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.COLUMN_SELECTED + " = 1;",null);
+        Cursor checkCursor = database.rawQuery("Select * From" + nimbusDB.TABLE_CHECKBOXES +" Where " + nimbusDB.COLUMN_PROFILE + " = " + nimbusDB.COLUMN_ID + " and " +nimbusDB.COLUMN_SELECTED + " = 1;", null);
+
+        rainPercent = profileCursor.getInt(3);
+        coatTemp = profileCursor.getInt(4);
+        sunCond = profileCursor.getString(5);
+        snowCB = profileCursor.getInt(6);
+
+        rainCB = checkCursor.getInt(2);
+        coatCB = checkCursor.getInt(3);
+        sunCB = checkCursor.getInt(4);
+        snowCB = checkCursor.getInt(5);
     }
 
 

@@ -21,11 +21,12 @@ public class NimbusDB extends SQLiteOpenHelper {
     public  final String COLUMN_SELECTED = "Selected";
 
     public final String TABLE_CHECKBOXES = "CheckBoxes";
+    public final String COLUMN_IDCB = "_id";
     public final String COLUMN_UMBRELLA = "Umbrella";
     public final String COLUMN_COAT = "Coat";
     public final String COLUMN_SUNSCREEN = "Sunscreen";
     public final String COLUMN_SNOW = "Snow";
-    public final String COULMN_PROFILE = "FK_ProfileID";
+    public final String COLUMN_PROFILE = "FK_ProfileID";
 
     public static final String DATABASE_NAME = "Nimbus.db";
     public static final int DATABASE_VERSION = 1;
@@ -34,8 +35,8 @@ public class NimbusDB extends SQLiteOpenHelper {
             COLUMN_RAIN_CHANCE + " integer " + COLUMN_COAT_TEMP + " integer " + COLUMN_SUNSCREEN_COND + " text " + COLUMN_SNOW_CHANCE + " integer " + COLUMN_SELECTED
             + " integer);";
 
-    public final String CHECKBOX_CREATE = "Create table " + TABLE_CHECKBOXES + " ( " + COLUMN_ID + " integer primary key autoincrement, " + COLUMN_UMBRELLA + " integer " + COLUMN_COAT + " integer " + COLUMN_SUNSCREEN +
-            " integer " + COLUMN_SNOW + " integer " + COULMN_PROFILE + " integer);";
+    public final String CHECKBOX_CREATE = "Create table " + TABLE_CHECKBOXES + " ( " + COLUMN_IDCB + " integer primary key autoincrement, " + COLUMN_UMBRELLA + " integer " + COLUMN_COAT + " integer " + COLUMN_SUNSCREEN +
+            " integer " + COLUMN_SNOW + " integer " + COLUMN_PROFILE + " integer);";
 
     public  final String DEFAULT_PROFILE = "Insert into  " + TABLE_PROFILES + " ( " + COLUMN_PROFILE_NAME + ", " + COLUMN_RAIN_CHANCE + ", " + COLUMN_COAT_TEMP
             + ", " + COLUMN_SUNSCREEN_COND + ", " + COLUMN_SNOW_CHANCE + "  " + COLUMN_SELECTED + " )" +
