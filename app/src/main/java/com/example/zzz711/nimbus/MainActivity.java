@@ -130,14 +130,49 @@ public class MainActivity extends Activity {
     }
 
     private void DBRead(){
-        Cursor cursor = database.rawQuery("Select * From " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.COLUMN_SELECTED + " = 1;", null);
+        Cursor cursor = database.rawQuery("Select * From " + nimbusDB.TABLE_CHECKBOXES + " Where " + nimbusDB.COLUMN_SELECTED + " = 1;", null);
+        int umbrella = cursor.getInt(2);
+        int coat = cursor.getInt(3);
+        int sun = cursor.getInt(4);
+        int snow = cursor.getInt(5);
 
+        setBoxes(umbrella, coat, sun, snow);
 
     }
 
     private void DBWrite(){
         database.execSQL("Update " + nimbusDB.TABLE_CHECKBOXES + " Set " + nimbusDB.COLUMN_UMBRELLA +  " = " + umbrellaBool + ", " + nimbusDB.COLUMN_COAT + " = " + coatBool + ", "
                         + nimbusDB.COLUMN_SUNSCREEN + " = " + sunscreenBool + ", " + nimbusDB.COLUMN_SNOW + " = " + snowBool);
+    }
+
+    private void setBoxes(int umbrella, int coat, int sun, int snow){
+        if(umbrella == 1){
+            checkUmbrella.setChecked(true);
+        }
+        else{
+            checkUmbrella.setChecked(false);
+        }
+
+        if (coat == 1) {
+            checkCoat.setChecked(true);
+        }
+        else{
+            checkCoat.setChecked(false);
+        }
+
+        if(sun == 1){
+            checkSunscreen.setChecked(true);
+        }
+        else{
+            checkSunscreen.setChecked(false);
+        }
+
+        if(snow == 1){
+            checkSnow.setChecked(true);
+        }
+        else{
+            checkSnow.setChecked(false);
+        }
     }
 
     public void Refresh(View view){
