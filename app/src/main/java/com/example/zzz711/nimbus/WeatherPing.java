@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -25,6 +26,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 
+//TODO Make it so that the location refresh only takes place once every few hours or so.
 /**
  * @author Margo
  * @version 1
@@ -99,7 +101,8 @@ public class WeatherPing extends Service implements LocationListener {
         return Service.START_NOT_STICKY;
     }
 
-    public String convertInputToString(InputStream inputStream) {
+
+   /* public String convertInputToString(InputStream inputStream) {
         String result = "";
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -117,7 +120,7 @@ public class WeatherPing extends Service implements LocationListener {
             Log.d("convertInput", e.getLocalizedMessage());
         }
         return result;
-    }
+    }*/
 
     public boolean isConnected() {
         ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Service.CONNECTIVITY_SERVICE);
@@ -138,7 +141,15 @@ public class WeatherPing extends Service implements LocationListener {
         boolean GPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
         if (!GPSEnabled) {
-            // TODO: what if they don't have GPS enabled?
+            try {
+                Criteria criteria = new Criteria();
+                String provider = locationManager.getBestProvider(criteria, false);
+                location = locationManager.getLastKnownLocation(provider);
+            }
+            catch (SecurityException e){
+                Toast.makeText(getApplicationContext(), "In order for this app to function you must give it location access", Toast.LENGTH_LONG).show(); //too long?
+            }
+
         } else {
             try {
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
@@ -163,7 +174,7 @@ public class WeatherPing extends Service implements LocationListener {
                     }
                 }
             } catch (SecurityException e) {
-                Toast.makeText(getApplicationContext(), "In order for this app to function you must give it location access", Toast.LENGTH_LONG); //too long?
+                Toast.makeText(getApplicationContext(), "In order for this app to function you must give it location access", Toast.LENGTH_LONG).show(); //too long?
             }
         }
         return location;
@@ -177,32 +188,6 @@ public class WeatherPing extends Service implements LocationListener {
             Log.d(String.valueOf(latitude), String.valueOf(longitude));
         }
     }
-
-   /* public String GET(String url) { //not sure if I need this anymore. It was meant to handle a different weather api, but was never finished
-        try {
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return " ";
-    }*/
-
-   /* private static String convertInputStreamToString(InputStream inputStream) throws IOException { //converts JSON to a string
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        String line = "";
-        String result = "";
-
-        Log.d("!!", result);
-        while ((line = bufferedReader.readLine()) != null)
-            result += line;
-
-        inputStream.close();
-        return result;
-
-    }*/
-
 
     //TODO add public boolean stopService(Intent name)
 
