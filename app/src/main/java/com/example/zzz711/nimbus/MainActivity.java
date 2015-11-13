@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,14 +21,9 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
     CheckBox checkUmbrella, checkCoat, checkSunscreen, checkSnow;
-    boolean umbrellaBool = true;
-    boolean coatBool, sunscreenBool, snowBool = false; //booleans for the state of the checks boxes
-    SharedPreferences.Editor editor;
+    int umbrellaBool = 1;
+    int coatBool, sunscreenBool, snowBool = 0; //booleans for the state of the checks boxes
     public static final String PREFERENCES = "Pref";
-    public static final String umbrellaKey = "umbrellaKey";
-    public static final String coatKey = "coatKey";
-    public static final String sunscreenKey = "sunscreenKey";
-    public static final String snowKey = "snowKey";
     SharedPreferences sharedPref;
     private SQLiteDatabase database;
     private NimbusDB nimbusDB;
@@ -45,22 +41,17 @@ public class MainActivity extends Activity {
         checkSunscreen = (CheckBox) findViewById(R.id.checkSunscreen);
         checkSnow = (CheckBox) findViewById(R.id.checkSnow);
 
-        if (!sharedPref.contains(PREFERENCES)){
-            editor = sharedPref.edit();
-            editor.putBoolean(umbrellaKey, umbrellaBool);
-            editor.putBoolean(coatKey, coatBool);
-            editor.putBoolean(sunscreenKey, sunscreenBool);
-            editor.putBoolean(snowKey, snowBool);
+        Context context = getApplicationContext();//not which sure context to get
+        nimbusDB = new NimbusDB(context);
+        database = nimbusDB.getWritableDatabase();
 
-            editor.apply();
-        }
+        DBRead();
 
-        Context context = getApplicationContext();//not which context to get
-
-        Log.d("","???");
 
         Intent weatherPing = new Intent(context, WeatherPing.class);
         //weatherPing.putExtra()
+
+
 
         context.startService(weatherPing);
     }
@@ -89,85 +80,64 @@ public class MainActivity extends Activity {
     }
 
 
-    //TODO save preferences in a new table in the database
     public void umbrellaClick(View view){
-        if(umbrellaBool){
-            umbrellaBool = false;
-
-            SharedPreferences.Editor editor1 = sharedPref.edit();
-            editor1.putBoolean(umbrellaKey, umbrellaBool);
-            editor1.apply();
-
+        if(umbrellaBool == 1){
+            umbrellaBool = 0;
         }
         else{
-            umbrellaBool = true;
-
-            SharedPreferences.Editor editor1 = sharedPref.edit();
-            editor1.putBoolean(umbrellaKey, umbrellaBool);
-            editor1.apply();
-
-       //     buildNotification(0);
+            umbrellaBool = 1;
         }
 
+        DBWrite();
     }
 
     public void coatClick(View view){
-        if(!coatBool){
-            coatBool = true;
-
-            SharedPreferences.Editor editor1 = sharedPref.edit();
-            editor1.putBoolean(coatKey, coatBool);
-            editor1.apply();
+        if(coatBool == 0){
+            coatBool = 1;
         //    buildNotification(1);
         }
-        else{
-            coatBool = false;
-
-            SharedPreferences.Editor editor1 = sharedPref.edit();
-            editor1.putBoolean(coatKey, coatBool);
-            editor1.apply();
+        else {
+            coatBool = 0;
         }
+
+        DBWrite();
 
     }
 
     public void sunscreenClick(View view){
-        if(!sunscreenBool){
-            sunscreenBool = true;
+        if(sunscreenBool == 0){
+            sunscreenBool = 1;
 
-            SharedPreferences.Editor editor1 = sharedPref.edit();
-            editor1.putBoolean(sunscreenKey, sunscreenBool);
-            editor1.apply();
-
-          //  buildNotification(2);
         }
         else{
-            sunscreenBool = false;
-
-            SharedPreferences.Editor editor1 = sharedPref.edit();
-            editor1.putBoolean(sunscreenKey, sunscreenBool);
-            editor1.apply();
+            sunscreenBool = 0;
         }
 
+        DBWrite();
     }
 
     public void snowClick(View view){
-        if(!snowBool){
-            snowBool = true;
-
-            SharedPreferences.Editor editor1 = sharedPref.edit();
-            editor1.putBoolean(snowKey, snowBool);
-            editor1.apply();
-
-            //buildNotification(3);
+        if(snowBool  == 0){
+            snowBool = 1;
         }
         else{
-            snowBool = false;
+            snowBool = 0;
 
-            SharedPreferences.Editor editor1 = sharedPref.edit();
-            editor1.putBoolean(snowKey, snowBool);
-            editor1.apply();
         }
 
+        DBWrite();
+
+    }
+
+    private void DBRead(){
+        Cursor cursor = database.rawQuery("Select * From " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.COLUMN_SELECTED + " = 1;", null);
+
+
+    }
+
+    private void DBWrite(){
+        database.execSQL("Update " + nimbusDB.TABLE_CHECKBOXES + " Set " + nimbusDB.COLUMN_UMBRELLA +  " = " + umbrellaBool + ", " + nimbusDB.COLUMN_COAT + " = " + coatBool + ", "
+                        + nimbusDB.COLUMN_SUNSCREEN + " = " + sunscreenBool + ", " + nimbusDB.COLUMN_SNOW + " = " + snowBool);
     }
 
     public void Refresh(View view){

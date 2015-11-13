@@ -44,7 +44,7 @@ import javax.security.auth.callback.Callback;
 
 /**
  * @author Margo
- * @version 11/15/2014
+ * @version 1
  * Weather Ping is a service class that runs in the background of Main Activity. It's primary job
  * is to send notifications based on current location data.
  */
@@ -53,7 +53,7 @@ public class WeatherPing extends Service implements LocationListener{
     String weatherUrl = "http://api.worldweatheronline.com/free/v2/weather.ashx?key=";
     protected LocationManager locationManager;
     private final Context currContext = this.getBaseContext();
-    private String apiKey = ""; //TODO: add, but don't commit key
+    private String apiKey = "9cbd89fade0170bb8102ed4296968"; //TODO: add, but don't commit key
     private static final long MIN_TIME_BW_UPDATES = 12600000; //  3.5 hours
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0; //no min change
     protected Location location;
