@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 
-//TODO Make it so that the location refresh only takes place once every few hours or so.
 /**
  * @author Margo
  * @version 1
@@ -43,6 +42,7 @@ public class WeatherPing extends Service implements LocationListener {
     double latitude;
     double longitude;
     Context context;
+    JSONParser parser;
 
 
     // constructor for WeatherPing service
@@ -62,8 +62,6 @@ public class WeatherPing extends Service implements LocationListener {
     public void onProviderDisabled(String provider) {
     }
 
-    public void onLocationChanged(Location location) {
-    }
 
 
     @Override
@@ -88,7 +86,9 @@ public class WeatherPing extends Service implements LocationListener {
         context = getApplicationContext();
         Intent weatherPing = new Intent(context, WeatherPing.class);
         startService(weatherPing);
-        JSONParser parser = new JSONParser(latitude, longitude, context);
+        parser = new JSONParser();
+        parser.onCall(latitude, longitude, context);
+
 
     }
 
@@ -132,6 +132,13 @@ public class WeatherPing extends Service implements LocationListener {
             return false;
         }
     }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        getLocation();
+        parser.onCall(latitude, longitude, context);
+    }
+
 
     public Location getLocation() {
 //        Log.d("::", currContext.toString());

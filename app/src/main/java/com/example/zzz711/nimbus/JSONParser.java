@@ -25,7 +25,7 @@ import java.net.URL;
  */
 public class JSONParser {
     String weatherUrl = "http://api.worldweatheronline.com/free/v2/weather.ashx?key=";
-    private String apiKey = "9cbd89fade0170bb8102ed4296968"; //add, but don't commit key
+    private String apiKey = ""; //add, but don't commit key
     Context context;
     private SQLiteDatabase database;
     private NimbusDB nimbusDB;
@@ -40,7 +40,8 @@ public class JSONParser {
     int snowCB = 0;
 
 
-    JSONParser(double latitude, double longitude,Context c){
+
+    public void onCall(double latitude, double longitude,Context c){
         context = c;
         String url = weatherUrl + apiKey + "&q="+ String.valueOf(latitude) + "," + String.valueOf(longitude) + "&num_of_days=2&tp=3&format=json";
 
@@ -50,9 +51,7 @@ public class JSONParser {
         readDB();
 
         new HttpAsyncTask(url, this).execute(url); //put real api in
-
     }
-
 
     public void setJSON(String json){
         try {
