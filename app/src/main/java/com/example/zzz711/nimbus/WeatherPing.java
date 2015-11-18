@@ -183,6 +183,9 @@ public class WeatherPing extends Service implements LocationListener {
             } catch (SecurityException e) {
                 Toast.makeText(getApplicationContext(), "In order for this app to function you must give it location access", Toast.LENGTH_LONG).show(); //too long?
             }
+            catch (Exception e){
+                e.printStackTrace();
+            }
         }
         return location;
     }

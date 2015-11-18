@@ -118,17 +118,20 @@ public class JSONParser {
 
     private void readDB() {
         Cursor profileCursor = database.rawQuery("Select * From " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.COLUMN_SELECTED + " = 1;", null);
-        Cursor checkCursor = database.rawQuery("Select * From" + nimbusDB.TABLE_CHECKBOXES + " Where " + nimbusDB.COLUMN_PROFILE + " = " + nimbusDB.COLUMN_ID + " and " + nimbusDB.COLUMN_SELECTED + " = 1;", null);
+        Cursor checkCursor = database.rawQuery("Select * From " + nimbusDB.TABLE_CHECKBOXES + ", " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.COLUMN_PROFILE + " = " + nimbusDB.TABLE_CHECKBOXES + "." + nimbusDB.COLUMN_ID + " and " + nimbusDB.COLUMN_SELECTED + " = 1;", null); //may need to alter
 
-        rainPercent = profileCursor.getInt(3);
-        coatTemp = profileCursor.getInt(4);
-        sunCond = profileCursor.getString(5);
-        snowCB = profileCursor.getInt(6);
+        profileCursor.moveToFirst();
+        checkCursor.moveToFirst();
 
-        rainCB = checkCursor.getInt(2);
-        coatCB = checkCursor.getInt(3);
-        sunCB = checkCursor.getInt(4);
-        snowCB = checkCursor.getInt(5);
+        rainPercent = profileCursor.getInt(2);
+        coatTemp = profileCursor.getInt(3);
+        sunCond = profileCursor.getString(4);
+        snowCB = profileCursor.getInt(5);
+
+        rainCB = checkCursor.getInt(1);
+        coatCB = checkCursor.getInt(2);
+        sunCB = checkCursor.getInt(3);
+        snowCB = checkCursor.getInt(4);
     }
 
     private class HttpAsyncTask extends AsyncTask<String, Void, String> { //get JSON

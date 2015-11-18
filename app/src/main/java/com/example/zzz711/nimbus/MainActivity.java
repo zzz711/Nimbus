@@ -43,7 +43,13 @@ public class MainActivity extends Activity {
 
         Context context = getApplicationContext();//not which sure context to get
         nimbusDB = new NimbusDB(context);
+
         database = nimbusDB.getWritableDatabase();
+
+        if(database == null){
+            nimbusDB.onCreate(database);
+            database = nimbusDB.getWritableDatabase();
+        }
 
         DBRead();
 
@@ -130,11 +136,13 @@ public class MainActivity extends Activity {
     }
 
     private void DBRead(){
-        Cursor cursor = database.rawQuery("Select * From " + nimbusDB.TABLE_CHECKBOXES + " Where " + nimbusDB.COLUMN_SELECTED + " = 1;", null);
-        int umbrella = cursor.getInt(2);
-        int coat = cursor.getInt(3);
-        int sun = cursor.getInt(4);
-        int snow = cursor.getInt(5);
+        Cursor cursor = database.rawQuery("Select * From " + nimbusDB.TABLE_CHECKBOXES + ", " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.TABLE_PROFILES + "." + nimbusDB.COLUMN_SELECTED + " = 1;", null);
+
+        cursor.moveToFirst();
+        int umbrella = cursor.getInt(0);
+        int coat = cursor.getInt(1);
+        int sun = cursor.getInt(2);
+        int snow = cursor.getInt(3);
 
         setBoxes(umbrella, coat, sun, snow);
 
@@ -173,6 +181,7 @@ public class MainActivity extends Activity {
         else{
             checkSnow.setChecked(false);
         }
+
     }
 
     public void Refresh(View view){
