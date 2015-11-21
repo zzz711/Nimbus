@@ -21,6 +21,7 @@ import java.util.List;
 public class Prefferences extends Activity implements AdapterView.OnItemSelectedListener{
     private SQLiteDatabase database;
     private NimbusDB nimbusDB;
+    Spinner profiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,17 +34,19 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
 
         Cursor cursor = database.rawQuery("Select " + nimbusDB.COLUMN_PROFILE_NAME + " from " + nimbusDB.TABLE_PROFILES, null);
         cursor.moveToFirst();
-        List<String> profilesList = new ArrayList<String>();
 
-        for(int i = 0; i < cursor.getColumnCount(); i++){
-            Log.d("Profile Name", cursor.getString(i));
-            profilesList.add(cursor.getString(i));
+        List<String> profilesList = new ArrayList<String>();
+        profilesList.add(cursor.getString(0));
+        while(cursor.moveToNext()){
+            Log.d("Profile Name", cursor.getString(0));
+            profilesList.add(cursor.getString(0));
+
         }
 
         ArrayAdapter<String> profileAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, profilesList);
         profileAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 
-        Spinner profiles = (Spinner) findViewById(R.id.profileDD);
+        profiles = (Spinner) findViewById(R.id.profileDD);
         profiles.setAdapter(profileAdapter);
     }
 
@@ -55,6 +58,7 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
         int dbPos = pos + 1;
 
         Cursor cursor = database.rawQuery("Select * From " + nimbusDB.TABLE_PROFILES + " Where " + dbPos + " = " + nimbusDB.COLUMN_ID, null );
+        cursor.moveToFirst();
         EditText editTextProfile = (EditText) findViewById(R.id.editTextProfile);
         editTextProfile.setText(cursor.getString(2));
 
@@ -113,7 +117,7 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
 
         else {
             try {
-                cursor = database.rawQuery("Select * From " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.COLUMN_PROFILE_NAME + " = " + profile + ";", null);
+                cursor = database.rawQuery("Select * From " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.COLUMN_PROFILE_NAME + " = '" + profile + "';", null);
                 cursor.moveToFirst();
 
             }
@@ -141,7 +145,8 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
             }
             else{
                 database.execSQL("Update " + nimbusDB.TABLE_PROFILES + "Set " +nimbusDB.COLUMN_RAIN_CHANCE + " = " + umbrella +", " + nimbusDB.COLUMN_COAT_TEMP + " = "
-                + coat + ", " + nimbusDB.COLUMN_SUNSCREEN_COND + " = " + sunScreen + ", " + nimbusDB.COLUMN_SNOW_CHANCE + " = " + snow + ", " + nimbusDB.COLUMN_SELECTED + " = 1);");
+                + coat + ", " + nimbusDB.COLUMN_SUNSCREEN_COND + " = '" + sunScreen + "', " + nimbusDB.COLUMN_SNOW_CHANCE + " = " + snow + ", " + nimbusDB.COLUMN_SELECTED + " = 1 " +
+                 "Where "+ nimbusDB.COLUMN_PROFILE_NAME + " = '" + profile + "' ;");
             }
 
             database.execSQL("Update " + nimbusDB.TABLE_PROFILES + " Set " + nimbusDB.COLUMN_SELECTED  +" = 0 Where " + nimbusDB.COLUMN_SELECTED + " = 1 AND " + nimbusDB.COLUMN_PROFILE_NAME + " != '" + profile + "';");

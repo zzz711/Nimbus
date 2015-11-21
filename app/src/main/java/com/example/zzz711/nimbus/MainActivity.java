@@ -214,7 +214,6 @@ public class MainActivity extends Activity {
     public void profilesClick(View view){
         Intent intent = new Intent(getBaseContext(), Prefferences.class);
         startActivity(intent);
-        DBRead();
     }
 
     //method to create notifications. Not used in final app
