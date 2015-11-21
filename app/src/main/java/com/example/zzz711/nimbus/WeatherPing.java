@@ -102,26 +102,11 @@ public class WeatherPing extends Service implements LocationListener {
     }
 
 
-   /* public String convertInputToString(InputStream inputStream) {
-        String result = "";
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            String line = "";
 
-
-            while ((line = bufferedReader.readLine()) != null) {
-                result += line;
-
-            }
-
-            inputStream.close();
-
-        } catch (Exception e) {
-            Log.d("convertInput", e.getLocalizedMessage());
-        }
-        return result;
-    }*/
-
+    /*
+    *method to check if there is an internet connection
+    * @return true, if there is a connection. Flase otherwise
+     */
     public boolean isConnected() {
         ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Service.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = conMgr.getActiveNetworkInfo();
@@ -140,6 +125,11 @@ public class WeatherPing extends Service implements LocationListener {
     }
 
 
+    /*
+    * method to get the user's location
+    * @return an object of the the location class containing the user's present location
+    *
+     */
     public Location getLocation() {
 //        Log.d("::", currContext.toString());
         //locationManager = (LocationManager) currContext.getSystemService(LOCATION_SERVICE);
@@ -190,6 +180,9 @@ public class WeatherPing extends Service implements LocationListener {
         return location;
     }
 
+    /*
+    *method to set the class variables for latitude and longitude
+     */
     public void setLatLong() {
         if (location != null) {
             latitude = location.getLatitude();

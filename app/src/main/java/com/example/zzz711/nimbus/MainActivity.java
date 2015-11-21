@@ -85,7 +85,12 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    /*
+    *
+    * onClick Method to handle when the umbrella check box is pressed
+    * @param an object of the view class
+    *
+     */
     public void umbrellaClick(View view){
         if(umbrellaBool == 1){
             umbrellaBool = 0;
@@ -97,6 +102,11 @@ public class MainActivity extends Activity {
         DBWrite();
     }
 
+    /*
+     * onClick Method to handle when the coat check box is pressed
+    * @param an object of the view class
+    *
+     */
     public void coatClick(View view){
         if(coatBool == 0){
             coatBool = 1;
@@ -110,6 +120,10 @@ public class MainActivity extends Activity {
 
     }
 
+    /*
+    * onClick Method to handle when the umbrella check box is pressed
+    * @param an object of the view class
+     */
     public void sunscreenClick(View view){
         if(sunscreenBool == 0){
             sunscreenBool = 1;
@@ -122,8 +136,12 @@ public class MainActivity extends Activity {
         DBWrite();
     }
 
+    /*
+    * onClick Method to handle when the umbrella check box is pressed
+    * @param an object of the view class
+     */
     public void snowClick(View view){
-        if(snowBool  == 0){
+        if(snowBool == 0){
             snowBool = 1;
         }
         else{
@@ -135,6 +153,9 @@ public class MainActivity extends Activity {
 
     }
 
+    /*
+    * method to get values from the SQLite database
+     */
     private void DBRead(){
         Cursor cursor = database.rawQuery("Select * From " + nimbusDB.TABLE_CHECKBOXES + ", " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.TABLE_PROFILES + "." + nimbusDB.COLUMN_SELECTED + " = 1;", null);
 
@@ -148,11 +169,18 @@ public class MainActivity extends Activity {
 
     }
 
-    private void DBWrite(){
-        database.execSQL("Update " + nimbusDB.TABLE_CHECKBOXES + " Set " + nimbusDB.COLUMN_UMBRELLA +  " = " + umbrellaBool + ", " + nimbusDB.COLUMN_COAT + " = " + coatBool + ", "
-                        + nimbusDB.COLUMN_SUNSCREEN + " = " + sunscreenBool + ", " + nimbusDB.COLUMN_SNOW + " = " + snowBool);
+    /*
+    *method to write checkbox values to the database
+     */
+    private void DBWrite() {
+        database.execSQL("Update " + nimbusDB.TABLE_CHECKBOXES + " Set " + nimbusDB.COLUMN_UMBRELLA + " = " + umbrellaBool + ", " + nimbusDB.COLUMN_COAT + " = " + coatBool + ", "
+                + nimbusDB.COLUMN_SUNSCREEN + " = " + sunscreenBool + ", " + nimbusDB.COLUMN_SNOW + " = " + snowBool);
     }
 
+    /*
+    * method to set the checkboxes with the values that were received from the database
+    *
+     */
     private void setBoxes(int umbrella, int coat, int sun, int snow){
         if(umbrella == 1){
             checkUmbrella.setChecked(true);
@@ -184,12 +212,12 @@ public class MainActivity extends Activity {
 
     }
 
-    public void Refresh(View view){
-        Context context = getApplicationContext();//not which context to get
-       // Intent weatherPing = new Intent(context, WeatherPing.class);
-     //   context.startService(weatherPing);
+    public void profilesClick(View view){
+        Intent intent = new Intent(this, Prefferences.class);
+        startActivity(intent);
     }
 
+    //method to create notifications. Not used in final app
    /* public void buildNotification(int number){ //final version will not push notification every time
         Notification.Builder nb = new Notification.Builder(this);
         switch(number){

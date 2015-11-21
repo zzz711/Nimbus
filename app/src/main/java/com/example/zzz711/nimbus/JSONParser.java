@@ -40,7 +40,9 @@ public class JSONParser {
     int snowCB = 0;
 
 
-
+    /*
+    * method to set latitude and longitude variables
+     */
     public void onCall(double latitude, double longitude,Context c){
         context = c;
         String url = weatherUrl + apiKey + "&q="+ String.valueOf(latitude) + "," + String.valueOf(longitude) + "&num_of_days=2&tp=3&format=json";
@@ -53,6 +55,10 @@ public class JSONParser {
         new HttpAsyncTask(url, this).execute(url); //put real api in
     }
 
+    /*
+    *Method to parse JSON
+    * @param a string containing the JSON
+     */
     public void setJSON(String json){
         try {
             JSONObject jsonObject = new JSONObject(json);
@@ -80,6 +86,10 @@ public class JSONParser {
 
     }
 
+    /*
+    *  method to create and push notifications to the user
+    *  @param an integer indicating what notification to send
+     */
     public void buildNotification(int number){ //create notification
         Notification.Builder nb = new Notification.Builder(context);
         switch(number){
@@ -108,7 +118,7 @@ public class JSONParser {
                 Bitmap snow = BitmapFactory.decodeResource(context.getResources(), R.drawable.snow_icon_large);
                 nb.setLargeIcon(snow);
                 nb.setContentTitle("Coat");
-                nb.setContentText("It's cold outside! Wear a winter coat and maybe some gloves.");
+                nb.setContentText("It's cold outside! Wear a winter coat and maybe some gloves."); //TODO: change message
                 nb.setSmallIcon(R.drawable.snow_icon);
                 break;
         }
@@ -116,6 +126,9 @@ public class JSONParser {
         notificationManager.notify(number, nb.build());
     }
 
+    /*
+    * method to read from the database
+     */
     private void readDB() {
         Cursor profileCursor = database.rawQuery("Select * From " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.COLUMN_SELECTED + " = 1;", null);
         Cursor checkCursor = database.rawQuery("Select * From " + nimbusDB.TABLE_CHECKBOXES + ", " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.COLUMN_PROFILE + " = " + nimbusDB.TABLE_CHECKBOXES + "." + nimbusDB.COLUMN_ID + " and " + nimbusDB.COLUMN_SELECTED + " = 1;", null); //may need to alter
@@ -136,9 +149,12 @@ public class JSONParser {
 
     private class HttpAsyncTask extends AsyncTask<String, Void, String> { //get JSON
         String url;
-        String json;
         JSONParser jsonParser;
 
+        /*
+        * constructor to set class variables
+         * @param a string contain the web address for the api and an object of the JSONParser class
+         */
         public HttpAsyncTask(String address, JSONParser ping){
             this.url = address;
             this.jsonParser = ping;

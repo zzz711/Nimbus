@@ -5,9 +5,4 @@
     <!--<item android:id="@+id/force_refresh" android:title="Refersh"-->
         <!--android:orderInCategory="200" android:showAsAction="never"-->
         <!--android:onClick="Refresh"/>-->
-    <item android:id="@+id/Preferences"
-        android:title="@string/Prefs"
-        android:orderInCategory="200"
-        android:showAsAction="withText"
-        android:onClick="@string/saveButton"/>
 </menu>

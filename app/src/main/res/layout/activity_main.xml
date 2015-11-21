@@ -96,7 +96,7 @@
                 android:layout_marginLeft="5dp"/>
         </TableRow>
 
-        <TableRow android:paddingBottom="250.0sp">
+        <TableRow android:paddingBottom="200.0sp">
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -121,6 +121,20 @@
                 android:id="@+id/textSnow"
                 android:text="Snow"
                 android:layout_marginLeft="5dp"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <Button
+                android:layout_width="230.0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/profileButton"
+                android:text="@string/profiles"
+                android:layout_column="2"
+                android:onClick="profilesClick"/>
+
         </TableRow>
 
         <TableRow
