@@ -47,7 +47,7 @@ public class JSONParser {
         context = c;
         String url = weatherUrl + apiKey + "&q="+ String.valueOf(latitude) + "," + String.valueOf(longitude) + "&num_of_days=2&tp=3&format=json";
 
-        nimbusDB = new NimbusDB(context);
+        nimbusDB = Singleton.getInstance(context).getNimbusDB();
         database = nimbusDB.getReadableDatabase();
 
         readDB();

@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,8 +24,6 @@ public class MainActivity extends Activity {
     CheckBox checkUmbrella, checkCoat, checkSunscreen, checkSnow;
     int umbrellaBool = 1;
     int coatBool, sunscreenBool, snowBool = 0; //booleans for the state of the checks boxes
-    public static final String PREFERENCES = "Pref";
-    SharedPreferences sharedPref;
     private SQLiteDatabase database;
     private NimbusDB nimbusDB;
 
@@ -34,7 +33,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sharedPref = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
 
         checkUmbrella = (CheckBox) findViewById(R.id.checkUmbrella);
         checkCoat = (CheckBox) findViewById(R.id.checkCoat);
@@ -42,7 +40,8 @@ public class MainActivity extends Activity {
         checkSnow = (CheckBox) findViewById(R.id.checkSnow);
 
         Context context = getApplicationContext();//not which sure context to get
-        nimbusDB = new NimbusDB(context);
+        Singleton.getInstance(context).setNimbusDB();
+        nimbusDB = Singleton.getInstance(context).getNimbusDB();
 
         database = nimbusDB.getWritableDatabase();
 
@@ -213,8 +212,9 @@ public class MainActivity extends Activity {
     }
 
     public void profilesClick(View view){
-        Intent intent = new Intent(this, Prefferences.class);
+        Intent intent = new Intent(getBaseContext(), Prefferences.class);
         startActivity(intent);
+        DBRead();
     }
 
     //method to create notifications. Not used in final app

@@ -26,9 +26,9 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prefferences);
-        Context context = getBaseContext();
+        Context context = getApplicationContext();
 
-        nimbusDB = new NimbusDB(context);
+        nimbusDB = Singleton.getInstance(context).getNimbusDB();
         database = nimbusDB.getWritableDatabase();
 
         Cursor cursor = database.rawQuery("Select " + nimbusDB.COLUMN_PROFILE_NAME + " from " + nimbusDB.TABLE_PROFILES, null);
