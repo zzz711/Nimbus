@@ -96,6 +96,7 @@ public class MainActivity extends Activity {
         }
         else{
             umbrellaBool = 1;
+            buildNotification(0);
         }
 
         DBWrite();
@@ -109,7 +110,7 @@ public class MainActivity extends Activity {
     public void coatClick(View view){
         if(coatBool == 0){
             coatBool = 1;
-        //    buildNotification(1);
+            buildNotification(1);
         }
         else {
             coatBool = 0;
@@ -126,6 +127,7 @@ public class MainActivity extends Activity {
     public void sunscreenClick(View view){
         if(sunscreenBool == 0){
             sunscreenBool = 1;
+            buildNotification(2);
 
         }
         else{
@@ -142,6 +144,7 @@ public class MainActivity extends Activity {
     public void snowClick(View view){
         if(snowBool == 0){
             snowBool = 1;
+            buildNotification(3);
         }
         else{
             snowBool = 0;
@@ -159,6 +162,13 @@ public class MainActivity extends Activity {
         Cursor cursor = database.rawQuery("Select * From " + nimbusDB.TABLE_CHECKBOXES + ", " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.TABLE_PROFILES + "." + nimbusDB.COLUMN_SELECTED + " = 1;", null);
 
         cursor.moveToFirst();
+
+        if(cursor.getCount() == 0){
+            database.execSQL("Update " + nimbusDB.TABLE_PROFILES + " Set " + nimbusDB.COLUMN_SELECTED + " = 1 " + " Where " +nimbusDB.COLUMN_PROFILE_NAME + " = 'Default';");
+            cursor = database.rawQuery("Select * From " + nimbusDB.TABLE_CHECKBOXES + ", " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.TABLE_PROFILES + "." + nimbusDB.COLUMN_SELECTED + " = 1;", null);
+            cursor.moveToFirst();
+        }
+
         int umbrella = cursor.getInt(0);
         int coat = cursor.getInt(1);
         int sun = cursor.getInt(2);
@@ -217,7 +227,7 @@ public class MainActivity extends Activity {
     }
 
     //method to create notifications. Not used in final app
-   /* public void buildNotification(int number){ //final version will not push notification every time
+   public void buildNotification(int number){ //final version will not push notification every time
         Notification.Builder nb = new Notification.Builder(this);
         switch(number){
             case 0: //take an umbrella
@@ -251,7 +261,7 @@ public class MainActivity extends Activity {
         }
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(number, nb.build());
-    }*/
+    }
 
 }
 

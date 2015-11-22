@@ -102,24 +102,25 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
         Cursor cursor = database.rawQuery("Select * From " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.COLUMN_SELECTED + "  = 1;", null);
         cursor.moveToFirst();
 
-        String profileName = cursor.getString(1);
-        int rain = cursor.getInt(2);
-        int caotTemp = cursor.getInt(3);
-        String sunscreen = cursor.getString(4);
-        int snow = cursor.getInt(5);
+        if(cursor.getCount() > 0) {
+            String profileName = cursor.getString(1);
+            int rain = cursor.getInt(2);
+            int coatTemp = cursor.getInt(3);
+            String sunscreen = cursor.getString(4);
+            int snow = cursor.getInt(5);
 
-        EditText editTextProfile = (EditText) findViewById(R.id.editTextProfile);
-        EditText editTextUmbrella = (EditText) findViewById(R.id.editTextUmbrella);
-        EditText editTextCoat = (EditText) findViewById(R.id.editTextCoat);
-        EditText editTextSunscreen = (EditText) findViewById(R.id.editTextSunscreen);
-        EditText editTextSnow = (EditText) findViewById(R.id.editTextSnow);
+            EditText editTextProfile = (EditText) findViewById(R.id.editTextProfile);
+            EditText editTextUmbrella = (EditText) findViewById(R.id.editTextUmbrella);
+            EditText editTextCoat = (EditText) findViewById(R.id.editTextCoat);
+            EditText editTextSunscreen = (EditText) findViewById(R.id.editTextSunscreen);
+            EditText editTextSnow = (EditText) findViewById(R.id.editTextSnow);
 
-        editTextProfile.setText(profileName);
-        editTextUmbrella.setText(Integer.valueOf(rain).toString());
-        editTextCoat.setText(Integer.valueOf(caotTemp).toString());
-        editTextSunscreen.setText(sunscreen);
-        editTextSnow.setText(Integer.valueOf(snow).toString());
-
+            editTextProfile.setText(profileName);
+            editTextUmbrella.setText(Integer.valueOf(rain).toString());
+            editTextCoat.setText(Integer.valueOf(coatTemp).toString());
+            editTextSunscreen.setText(sunscreen);
+            editTextSnow.setText(Integer.valueOf(snow).toString());
+        }
 
     }
 
@@ -134,14 +135,15 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
         String profile = editTextProfile.getText().toString();
         Cursor cursor;
 
-        if (profile.equals(null) || profile.equals("Default")) {
+        Log.d("profile", profile);
+
+        if (profile.equals(null)) {
             finish();
         }
 
         else {
             try {
                 cursor = database.rawQuery("Select * From " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.COLUMN_PROFILE_NAME + " = '" + profile + "';", null);
-                cursor.moveToFirst();
 
             }
             catch (SQLiteException e){
@@ -159,17 +161,17 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
             EditText snowET = (EditText) findViewById(R.id.editTextSnow);
             int snow = Integer.parseInt(snowET.getText().toString());
 
-
-            if(cursor == null){
+            cursor.moveToFirst();
+            if(cursor == null || cursor.getCount() == 0){
 
                 database.execSQL("Insert Into " + nimbusDB.TABLE_PROFILES + " (" + nimbusDB.COLUMN_PROFILE_NAME + ", " + nimbusDB.COLUMN_RAIN_CHANCE + ", " + nimbusDB.COLUMN_COAT_TEMP + ", " + nimbusDB.COLUMN_SUNSCREEN_COND + ", "
                         + nimbusDB.COLUMN_SNOW_CHANCE + "," + nimbusDB.COLUMN_SELECTED +")"
                         + " Values( '" + profile + "', " + umbrella + ", " + coat + ", '" + sunScreen + "', " + snow + ", 1);");
             }
             else{
-                database.execSQL("Update " + nimbusDB.TABLE_PROFILES + "Set " +nimbusDB.COLUMN_RAIN_CHANCE + " = " + umbrella +", " + nimbusDB.COLUMN_COAT_TEMP + " = "
+                database.execSQL("Update " + nimbusDB.TABLE_PROFILES + " Set " +nimbusDB.COLUMN_RAIN_CHANCE + " = " + umbrella +", " + nimbusDB.COLUMN_COAT_TEMP + " = "
                 + coat + ", " + nimbusDB.COLUMN_SUNSCREEN_COND + " = '" + sunScreen + "', " + nimbusDB.COLUMN_SNOW_CHANCE + " = " + snow + ", " + nimbusDB.COLUMN_SELECTED + " = 1 " +
-                 "Where "+ nimbusDB.COLUMN_PROFILE_NAME + " = '" + profile + "' ;");
+                 "Where "+ nimbusDB.COLUMN_PROFILE_NAME + " = '" + profile + "';");
             }
 
             database.execSQL("Update " + nimbusDB.TABLE_PROFILES + " Set " + nimbusDB.COLUMN_SELECTED  +" = 0 Where " + nimbusDB.COLUMN_SELECTED + " = 1 AND " + nimbusDB.COLUMN_PROFILE_NAME + " != '" + profile + "';");
