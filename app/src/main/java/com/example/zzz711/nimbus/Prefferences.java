@@ -48,12 +48,11 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
 
         profiles = (Spinner) findViewById(R.id.profileDD);
         profiles.setAdapter(profileAdapter);
+
+        loadSelectedProfile();
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        Context context = getBaseContext();
-
-        nimbusDB = new NimbusDB(context);
         database = nimbusDB.getWritableDatabase();
         int dbPos = pos + 1;
 
@@ -74,15 +73,14 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
         EditText editTextSnow = (EditText) findViewById(R.id.editTextSnow);
         editTextSnow.setText(cursor.getInt(6));
     }
-
+    /*
+    * method required as part of the spinner. Should load the selected profile.
+    * @param an AdapterViewer
+     */
     public void onNothingSelected(AdapterView<?> parent) {
-        // may need to put this in onCreate
-        Context context = getBaseContext();
-
-        nimbusDB = new NimbusDB(context);
         database = nimbusDB.getWritableDatabase();
 
-        Cursor cursor = database.rawQuery("Select * From " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.COLUMN_PROFILE_NAME + " 'Default", null);
+        Cursor cursor = database.rawQuery("Select * From " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.COLUMN_SELECTED + "  = 1;", null);
         EditText editTextProfile = (EditText) findViewById(R.id.editTextProfile);
         editTextProfile.setText(cursor.getString(2));
 
@@ -97,6 +95,31 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
 
         EditText editTextSnow = (EditText) findViewById(R.id.editTextSnow);
         editTextSnow.setText(cursor.getInt(6));
+
+    }
+
+    public void loadSelectedProfile(){
+        Cursor cursor = database.rawQuery("Select * From " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.COLUMN_SELECTED + "  = 1;", null);
+        cursor.moveToFirst();
+
+        String profileName = cursor.getString(1);
+        int rain = cursor.getInt(2);
+        int caotTemp = cursor.getInt(3);
+        String sunscreen = cursor.getString(4);
+        int snow = cursor.getInt(5);
+
+        EditText editTextProfile = (EditText) findViewById(R.id.editTextProfile);
+        EditText editTextUmbrella = (EditText) findViewById(R.id.editTextUmbrella);
+        EditText editTextCoat = (EditText) findViewById(R.id.editTextCoat);
+        EditText editTextSunscreen = (EditText) findViewById(R.id.editTextSunscreen);
+        EditText editTextSnow = (EditText) findViewById(R.id.editTextSnow);
+
+        editTextProfile.setText(profileName);
+        editTextUmbrella.setText(Integer.valueOf(rain).toString());
+        editTextCoat.setText(Integer.valueOf(caotTemp).toString());
+        editTextSunscreen.setText(sunscreen);
+        editTextSnow.setText(Integer.valueOf(snow).toString());
+
 
     }
 

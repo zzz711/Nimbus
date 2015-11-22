@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Nimbus</string>
+    <string name="app_name">Project Nimbus</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="Credit">Weather information provided by World Weather Online</string>
