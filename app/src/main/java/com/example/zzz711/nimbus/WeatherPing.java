@@ -64,6 +64,10 @@ public class WeatherPing extends Service implements LocationListener {
 
 
 
+    /*
+    * method to start the location listener service
+    * @param an Intent from the class where the class was called from
+     */
     @Override
     public ComponentName startService(Intent intent) {
         //onHandleIntent(intent);
@@ -80,6 +84,10 @@ public class WeatherPing extends Service implements LocationListener {
         return cn;
     }
 
+    /*
+    * override of default on create method
+    *
+     */
     @Override
     public void onCreate() {
         //onStartCommand(serviceIntent, 0, 0); //start id may not be 0
@@ -92,6 +100,10 @@ public class WeatherPing extends Service implements LocationListener {
 
     }
 
+    /*
+    * override of default onStartCommand
+    * @params an Intent, an integer to represent flags, an integer for the startID
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (isConnected()) {
@@ -105,7 +117,7 @@ public class WeatherPing extends Service implements LocationListener {
 
     /*
     *method to check if there is an internet connection
-    * @return true, if there is a connection. Flase otherwise
+    * @return true, if there is a connection. False otherwise
      */
     public boolean isConnected() {
         ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Service.CONNECTIVITY_SERVICE);
@@ -118,6 +130,10 @@ public class WeatherPing extends Service implements LocationListener {
         }
     }
 
+    /*
+    * override of default onLocationChanged
+     * @param an object of the location class
+     */
     @Override
     public void onLocationChanged(Location location) {
         getLocation();
@@ -194,6 +210,10 @@ public class WeatherPing extends Service implements LocationListener {
 
     //TODO add public boolean stopService(Intent name)
 
+    /*
+    * override of default onBind
+    * @param an intent
+     */
     @Override
     public IBinder onBind(Intent intent) {
         return null;

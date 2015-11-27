@@ -28,6 +28,11 @@ public class MainActivity extends Activity {
     private NimbusDB nimbusDB;
 
 
+    /*
+    * override of default on create.
+    * sets the checkboxes and creates/gets the SQLite database
+    * @param a bundle
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +67,10 @@ public class MainActivity extends Activity {
     }
 
 
+    /*
+    * override of super onCreateOptionsMenu method
+    * @param an object of the Menu class
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -69,6 +78,10 @@ public class MainActivity extends Activity {
         return true;
     }
 
+    /*
+    * override of super onOptionsItemSelected
+    * @param a MenuItem object
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -96,7 +109,7 @@ public class MainActivity extends Activity {
         }
         else{
             umbrellaBool = 1;
-            buildNotification(0);
+         //   buildNotification(0);
         }
 
         DBWrite();
@@ -110,7 +123,7 @@ public class MainActivity extends Activity {
     public void coatClick(View view){
         if(coatBool == 0){
             coatBool = 1;
-            buildNotification(1);
+        //    buildNotification(1);
         }
         else {
             coatBool = 0;
@@ -127,7 +140,7 @@ public class MainActivity extends Activity {
     public void sunscreenClick(View view){
         if(sunscreenBool == 0){
             sunscreenBool = 1;
-            buildNotification(2);
+        //    buildNotification(2);
 
         }
         else{
@@ -144,7 +157,7 @@ public class MainActivity extends Activity {
     public void snowClick(View view){
         if(snowBool == 0){
             snowBool = 1;
-            buildNotification(3);
+           // buildNotification(3);
         }
         else{
             snowBool = 0;
@@ -221,11 +234,15 @@ public class MainActivity extends Activity {
 
     }
 
+    /*
+
+     */
     public void profilesClick(View view){
         Intent intent = new Intent(getBaseContext(), Prefferences.class);
         startActivity(intent);
     }
 
+    /*
     //method to create notifications. Not used in final app
    public void buildNotification(int number){ //final version will not push notification every time
         Notification.Builder nb = new Notification.Builder(this);
@@ -261,7 +278,7 @@ public class MainActivity extends Activity {
         }
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(number, nb.build());
-    }
+    }*/
 
 }
 

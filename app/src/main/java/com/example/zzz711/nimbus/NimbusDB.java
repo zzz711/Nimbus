@@ -5,8 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.security.PublicKey;
-
 /**
  * Created by zzz711 on 11/3/15.
  */

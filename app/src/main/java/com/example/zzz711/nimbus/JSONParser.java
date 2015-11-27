@@ -64,18 +64,18 @@ public class JSONParser {
             JSONObject jsonObject = new JSONObject(json);
             JSONObject forecast = jsonObject.getJSONArray("weather").getJSONObject(0);
 
-            if(forecast.getInt("chanceofrain") > rainPercent && rainCB == 1){
+            if(forecast.getInt("chanceofrain") >= rainPercent && rainCB == 1){
                 buildNotification(0);
             }
 
-            if(forecast.getInt("tempF") < coatTemp && coatCB == 1){
+            if(forecast.getInt("tempF") <= coatTemp && coatCB == 1){
                 buildNotification(1);
             }
 
             if(forecast.getJSONArray("weatherDesc").getJSONObject(0).getString("value").equals(sunCond) && sunCB == 1){
                 buildNotification(2);
             }
-            if(forecast.getInt("chanceofsnow") > snowPercent && snowCB == 1) {
+            if(forecast.getInt("chanceofsnow") >= snowPercent && snowCB == 1) {
                 buildNotification(3);
             }
         }
@@ -147,6 +147,9 @@ public class JSONParser {
         snowCB = checkCursor.getInt(4);
     }
 
+    /*
+    * Async class that makes http request
+     */
     private class HttpAsyncTask extends AsyncTask<String, Void, String> { //get JSON
         String url;
         JSONParser jsonParser;
@@ -161,6 +164,10 @@ public class JSONParser {
         }
 
 
+        /*
+        * method that makes http request. override of AsyncTask class method
+        * @param a String with the web url
+         */
         @Override
         protected String doInBackground(String... urls) {
             StringBuilder result = new StringBuilder();
@@ -188,6 +195,11 @@ public class JSONParser {
 
         }
 
+        /*
+        * method that executes once doInBackGround has finished.
+        * Makes call back the JSONParser class.
+        * @param a String containing the result of doInBackground
+         */
         @Override
         protected void onPostExecute(String result) {
             this.jsonParser.setJSON(result);

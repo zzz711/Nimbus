@@ -144,7 +144,7 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
         else {
             try {
                 cursor = database.rawQuery("Select * From " + nimbusDB.TABLE_PROFILES + " Where " + nimbusDB.COLUMN_PROFILE_NAME + " = '" + profile + "';", null);
-
+                cursor.moveToFirst();
             }
             catch (SQLiteException e){
                 cursor = null;
@@ -161,7 +161,6 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
             EditText snowET = (EditText) findViewById(R.id.editTextSnow);
             int snow = Integer.parseInt(snowET.getText().toString());
 
-            cursor.moveToFirst();
             if(cursor == null || cursor.getCount() == 0){
 
                 database.execSQL("Insert Into " + nimbusDB.TABLE_PROFILES + " (" + nimbusDB.COLUMN_PROFILE_NAME + ", " + nimbusDB.COLUMN_RAIN_CHANCE + ", " + nimbusDB.COLUMN_COAT_TEMP + ", " + nimbusDB.COLUMN_SUNSCREEN_COND + ", "
