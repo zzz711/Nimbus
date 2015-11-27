@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textUmbrella"
-                android:text="Umbrella"
+                android:text="@string/umbrella"
                 android:layout_marginLeft="5dp"/>
         </TableRow>
 
@@ -64,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/textCoat"
-                android:text="Coat"
+                android:text="@string/coat"
                 android:layout_marginLeft="5dp"/>
 
         </TableRow>
@@ -92,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/textSunscreen"
-                android:text="Sunscreen"
+                android:text="@string/sunScreen"
                 android:layout_marginLeft="5dp"/>
         </TableRow>
 
@@ -119,7 +119,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/textSnow"
-                android:text="Snow"
+                android:text="@string/snow"
                 android:layout_marginLeft="5dp"/>
         </TableRow>
 

@@ -12,7 +12,7 @@
     <string name="profieName">Profile Name</string>
     <string name="umbrella">Umbrella</string>
     <string name="coat">Coat</string>
-    <string name="sunScreen">SunScreen</string>
+    <string name="sunScreen">Sunscreen</string>
     <string name="snow">Snow</string>
     <string name="profiles">Create Profile</string>
 </resources>
