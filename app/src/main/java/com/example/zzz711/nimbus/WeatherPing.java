@@ -35,9 +35,9 @@ import java.io.InputStreamReader;
 public class WeatherPing extends Service implements LocationListener {
     Intent serviceIntent;
     protected LocationManager locationManager;
-    private final Context currContext = this.getBaseContext();
+    private final Context currContext;
     private static final long MIN_TIME_BW_UPDATES = 12600000; //  3.5 hours
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0; //no min change
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10000; //10000 meter change
     protected Location location;
     double latitude;
     double longitude;
@@ -45,10 +45,18 @@ public class WeatherPing extends Service implements LocationListener {
     JSONParser parser;
 
 
+
     // constructor for WeatherPing service
-    public WeatherPing() {
+    public WeatherPing(Context context) {
         // grab the current context
         //currContext = getApplicationContext();
+        this.currContext = context;
+       // getLocation();
+
+        //todo: initialize JSONPARSER object
+        parser = new JSONParser();
+
+        //getLocation();
     }
 
 
@@ -74,13 +82,13 @@ public class WeatherPing extends Service implements LocationListener {
 
 
         if (currContext == null) {
-            Log.d("@@@", " Intent is not the problem");
+           // Log.d("@@@", " Intent is not the problem");
         }
 
         serviceIntent = intent;
         onStartCommand(intent, 0, 0);
-        //ComponentName cn = new ComponentName(currContext, "WeatherPing");
-        ComponentName cn = new ComponentName(context, "WeatherPing");
+        ComponentName cn = new ComponentName(currContext, "WeatherPing");
+        //ComponentName cn = new ComponentName(context, "WeatherPing");
         return cn;
     }
 
@@ -88,30 +96,30 @@ public class WeatherPing extends Service implements LocationListener {
     * override of default on create method
     *
      */
-    @Override
-    public void onCreate() {
-        //onStartCommand(serviceIntent, 0, 0); //start id may not be 0
-        context = getApplicationContext();
-        Intent weatherPing = new Intent(context, WeatherPing.class);
-        startService(weatherPing);
-        parser = new JSONParser();
-        parser.onCall(latitude, longitude, context);
-
-
-    }
-
-    /*
-    * override of default onStartCommand
-    * @params an Intent, an integer to represent flags, an integer for the startID
-     */
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        if (isConnected()) {
-            getLocation();
-            //GET();
-        }
-        return Service.START_NOT_STICKY;
-    }
+//    @Override
+//    public void onCreate() {
+//        //onStartCommand(serviceIntent, 0, 0); //start id may not be 0
+//        context = getApplicationContext();
+//        Intent weatherPing = new Intent(context, WeatherPing.class);
+//        startService(weatherPing);
+//        parser = new JSONParser();
+//        parser.onCall(latitude, longitude, context);
+//
+//
+//    }
+//
+//    /*
+//    * override of default onStartCommand
+//    * @params an Intent, an integer to represent flags, an integer for the startID
+//     */
+//    @Override
+//    public int onStartCommand(Intent intent, int flags, int startId) {
+//        if (isConnected()) {
+//            getLocation();
+//            //GET();
+//        }
+//        return Service.START_NOT_STICKY;
+//    }
 
 
 
@@ -137,7 +145,8 @@ public class WeatherPing extends Service implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         getLocation();
-        parser.onCall(latitude, longitude, context);
+       // parser.onCall(latitude, longitude, currContext);
+        parser.onCall(latitude, longitude, currContext);
     }
 
 
@@ -148,8 +157,8 @@ public class WeatherPing extends Service implements LocationListener {
      */
     public Location getLocation() {
 //        Log.d("::", currContext.toString());
-        //locationManager = (LocationManager) currContext.getSystemService(LOCATION_SERVICE);
-        locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
+        locationManager = (LocationManager) currContext.getSystemService(LOCATION_SERVICE);
+       // locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
 
         boolean GPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
@@ -160,18 +169,19 @@ public class WeatherPing extends Service implements LocationListener {
                 location = locationManager.getLastKnownLocation(provider);
             }
             catch (SecurityException e){
-                Toast.makeText(getApplicationContext(), "In order for this app to function you must give it location access", Toast.LENGTH_LONG).show(); //too long?
+                Toast.makeText(getApplicationContext(), "In order for this app to function you must give it location access", Toast.LENGTH_LONG).show();
             }
 
         } else {
             try {
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                //not working because network provider doesn't exist. Try GPS
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                         MIN_TIME_BW_UPDATES,
                         MIN_DISTANCE_CHANGE_FOR_UPDATES,
                         this);
                 Log.d("Network", "Network");
                 if (locationManager != null) {
-                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     setLatLong();
                 }
                 if (location == null) {

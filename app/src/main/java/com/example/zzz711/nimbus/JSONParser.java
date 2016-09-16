@@ -8,24 +8,40 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.TimeZone;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Headers;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by zzz711 on 11/13/15.
  */
 public class JSONParser {
     String weatherUrl = "http://api.worldweatheronline.com/free/v2/weather.ashx?key=";
-    private String apiKey = ""; //add, but don't commit key
+    private String apiKey = "9cbd89fade0170bb8102ed4296968"; //add, but don't commit key
     Context context;
     private SQLiteDatabase database;
     private NimbusDB nimbusDB;
@@ -39,6 +55,12 @@ public class JSONParser {
     int sunCB = 0;
     int snowCB = 0;
 
+    //TODO: create constructor to read the database and set values
+
+    public JSONParser(){
+        nimbusDB = Singleton.getInstance(context).getNimbusDB();
+        database = nimbusDB.getReadableDatabase();
+    }
 
     /*
     * method to set latitude and longitude variables
@@ -46,13 +68,12 @@ public class JSONParser {
     public void onCall(double latitude, double longitude,Context c){
         context = c;
         String url = weatherUrl + apiKey + "&q="+ String.valueOf(latitude) + "," + String.valueOf(longitude) + "&num_of_days=2&tp=3&format=json";
-
-        nimbusDB = Singleton.getInstance(context).getNimbusDB();
-        database = nimbusDB.getReadableDatabase();
+        Log.d("URL: ", url);
 
         readDB();
 
         new HttpAsyncTask(url, this).execute(url); //put real api in
+       // run(url);
     }
 
     /*
@@ -62,9 +83,13 @@ public class JSONParser {
     public void setJSON(String json){
         try {
             JSONObject jsonObject = new JSONObject(json);
-            JSONObject forecast = jsonObject.getJSONArray("weather").getJSONObject(0);
+            JSONObject forecast = jsonObject.getJSONObject("data").getJSONArray("weather").getJSONObject(0).getJSONArray("hourly").getJSONObject(0);
+            Log.d("out", forecast.toString());
 
-            if(forecast.getInt("chanceofrain") >= rainPercent && rainCB == 1){
+
+
+            if(forecast.getInt("chanceofrain") >= rainPercent /*&& rainCB == 1*/){
+
                 buildNotification(0);
             }
 
@@ -147,12 +172,14 @@ public class JSONParser {
         snowCB = checkCursor.getInt(4);
     }
 
+
     /*
     * Async class that makes http request
      */
     private class HttpAsyncTask extends AsyncTask<String, Void, String> { //get JSON
         String url;
         JSONParser jsonParser;
+        private final OkHttpClient client = new OkHttpClient();
 
         /*
         * constructor to set class variables
@@ -171,12 +198,22 @@ public class JSONParser {
         @Override
         protected String doInBackground(String... urls) {
             StringBuilder result = new StringBuilder();
-
+            String res = "";
+            String newUrl = urls[0];
 
             try {
 
-                URL url = new URL(urls.toString());
+//                Request request = new Request.Builder().url(newUrl).build();
+//
+//                Response response = client.newCall(request).execute();
+//                res = response.body().toString();
+                URL url = new URL(newUrl);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setUseCaches(false);
+                urlConnection.setDoInput(true);
+                urlConnection.setDoOutput(true);
+
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -191,6 +228,7 @@ public class JSONParser {
             catch (Exception e){
                 e.printStackTrace();
             }
+
             return  result.toString();
 
         }

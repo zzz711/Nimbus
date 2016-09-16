@@ -70,21 +70,21 @@ public class MainActivity extends Activity {
 
         else {
 
-            Intent weatherPing = new Intent(context, WeatherPing.class);
+            //Intent weatherPing = new Intent(context, WeatherPing.class);
             //weatherPing.putExtra()
+            WeatherPing ping = new WeatherPing(this);
+            ping.getLocation();
 
-
-            context.startService(weatherPing);
+            //context.startService(weatherPing);
         }
     }
 
     public void getPermissions(){
        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
-               //todo get message asking for permission to appear
+
            }
            else {
-                //todo possibly add warning since permission was denied
                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
            }
        }
