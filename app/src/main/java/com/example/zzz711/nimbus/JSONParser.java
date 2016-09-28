@@ -27,6 +27,7 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 import okhttp3.Call;
@@ -55,11 +56,11 @@ public class JSONParser {
     int sunCB = 0;
     int snowCB = 0;
 
-    //TODO: create constructor to read the database and set values
-
     public JSONParser(){
         nimbusDB = Singleton.getInstance(context).getNimbusDB();
         database = nimbusDB.getReadableDatabase();
+
+
     }
 
     /*
@@ -83,12 +84,30 @@ public class JSONParser {
     public void setJSON(String json){
         try {
             JSONObject jsonObject = new JSONObject(json);
-            JSONObject forecast = jsonObject.getJSONObject("data").getJSONArray("weather").getJSONObject(0).getJSONArray("hourly").getJSONObject(0);
-            Log.d("out", forecast.toString());
+            String currHour = getTime(); // use currHour to get closest
+
+            JSONArray weather = jsonObject.getJSONObject("data").getJSONArray("weather").getJSONObject(0).getJSONArray("hourly");
+            JSONObject forecast = null;
+
+            Log.d("rainCB:", String.valueOf(coatCB));
+
+            for(int i = 0; i < weather.length(); i++){
+                forecast = weather.getJSONObject(i);
+
+                if(forecast.getString("time").equals(currHour) || forecast.getString("time").equals(String.valueOf(Integer.valueOf(currHour) + 100)) ){
+                    break;
+                }
+
+                else if(forecast.getString("time").equals(String.valueOf(Integer.valueOf(currHour) + 200))){ //no real need for an else if except for readablity
+                    break;
+                }
+
+            }
+            //Log.d("out", forecast.toString());
 
 
 
-            if(forecast.getInt("chanceofrain") >= rainPercent /*&& rainCB == 1*/){
+            if(forecast.getInt("chanceofrain") >= rainPercent && rainCB == 1){
 
                 buildNotification(0);
             }
@@ -172,6 +191,38 @@ public class JSONParser {
         snowCB = checkCursor.getInt(4);
     }
 
+
+    private String getTime(){
+        Calendar calendar = Calendar.getInstance();
+        String tzInfo = calendar.getTimeZone().toString();
+        String timeZone = tzInfo.substring(tzInfo.indexOf("id=") + 4 , tzInfo.indexOf(",mRaw") -1);
+        DateFormat dateFormat = DateFormat.getTimeInstance();
+        dateFormat.setTimeZone(TimeZone.getTimeZone(timeZone));
+        String time = dateFormat.format(new Date());
+
+//        String fullTime = time.substring(0, time.indexOf(":")) + time.substring(time.indexOf(":") + 1);
+//
+//        fullTime = time.substring(0, time.indexOf(":"));
+//
+//        int timeLen = fullTime.length();
+//
+//        String minutes = fullTime.substring(timeLen - 1, timeLen);
+//
+//        Log.d("mintues", minutes);
+
+        String hour = time.subSequence(0, time.indexOf(":")).toString();
+
+        if(time.contains("PM")){
+            int hourInt = Integer.valueOf(hour) + 12;
+            hour = String.valueOf(hourInt) + "00";
+        }
+        else{
+            hour = hour + "00";
+        }
+        Log.d("YZ", timeZone);
+
+        return hour;
+    }
 
     /*
     * Async class that makes http request
