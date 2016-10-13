@@ -15,4 +15,7 @@
     <string name="sunScreen">Sunscreen</string>
     <string name="snow">Snow</string>
     <string name="profiles">Create Profile</string>
+    <string name="percent">As a percentage</string>
+    <string name="degrees"> In degrees Fahrenheit</string>
+    <string name="celsius"> Use degrees celsius</string>
 </resources>

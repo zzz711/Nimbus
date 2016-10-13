@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -154,6 +155,11 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
 
             EditText coatET = (EditText) findViewById(R.id.editTextCoat);
             int coat = Integer.parseInt(coatET.getText().toString());
+
+            CheckBox celsiusBox = (CheckBox) findViewById(R.id.celsiusBox);
+            if (celsiusBox.isChecked()){
+                coat = coat * 9/5 + 32;
+            }
 
             EditText sunscreenET = (EditText) findViewById(R.id.editTextSunscreen);
             String sunScreen = sunscreenET.getText().toString();

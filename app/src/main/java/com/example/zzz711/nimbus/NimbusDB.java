@@ -38,7 +38,7 @@ public class NimbusDB extends SQLiteOpenHelper {
 
     public  final String DEFAULT_PROFILE = "Insert Into " + TABLE_PROFILES + " ( " + COLUMN_PROFILE_NAME + ", " + COLUMN_RAIN_CHANCE + ", " + COLUMN_COAT_TEMP
             + ", " + COLUMN_SUNSCREEN_COND + ", " + COLUMN_SNOW_CHANCE + ",  " + COLUMN_SELECTED + " )" +
-            " Values ( 'Default', 67, 56, 'Mostly Sunny', 57, 1);";
+            " Values ( 'Default', 67, 56, 'F' ,'Mostly Sunny', 57, 1);";
 
     public final String DEFAULT_BOXES = "Insert Into " + TABLE_CHECKBOXES + " ( " + COLUMN_UMBRELLA + ", " +COLUMN_COAT + ", " + COLUMN_SUNSCREEN  + ", " + COLUMN_SNOW  + ", " + COLUMN_PROFILE +
             ") Values( 1, 0, 0, 0, 1);"; //While I don't like hard coding the default profile ID into the table it is ok for now since the user has no way to delete profiles
