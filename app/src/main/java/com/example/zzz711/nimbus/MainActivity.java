@@ -96,11 +96,14 @@ public class MainActivity extends Activity {
         if(requestCode == MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION){
             //// TODO: launch weather ping service
             Context context = getApplicationContext();//not which sure context to get
-            Intent weatherPing = new Intent(context, WeatherPing.class);
+            //Intent weatherPing = new Intent(context, WeatherPing.class);
             //weatherPing.putExtra()
 
+            WeatherPing ping = new WeatherPing(this);
+            ping.getLocation();
 
-            context.startService(weatherPing);
+
+            //context.startService(weatherPing);
         }
     }
 

@@ -45,7 +45,6 @@ public class WeatherPing extends Service implements LocationListener {
     JSONParser parser;
 
 
-
     // constructor for WeatherPing service
     public WeatherPing(Context context) {
         // grab the current context
