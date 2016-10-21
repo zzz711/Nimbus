@@ -223,11 +223,13 @@ public class MainActivity extends Activity {
             cursor.moveToFirst();
         }
 
-        int umbrella = cursor.getInt(0);
-        int coat = cursor.getInt(1);
-        int sun = cursor.getInt(2);
-        int snow = cursor.getInt(3);
+        //need to start to 1 since column 0 is the id column
+        int umbrella = cursor.getInt(1);
+        int coat = cursor.getInt(2);
+        int sun = cursor.getInt(3);
+        int snow = cursor.getInt(4);
 
+        cursor.close();
         setBoxes(umbrella, coat, sun, snow);
 
     }

@@ -44,6 +44,8 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
 
         }
 
+        cursor.close();
+
         ArrayAdapter<String> profileAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, profilesList);
         profileAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 
@@ -73,6 +75,9 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
 
         EditText editTextSnow = (EditText) findViewById(R.id.editTextSnow);
         editTextSnow.setText(cursor.getInt(6));
+
+        cursor.close();
+
     }
     /*
     * method required as part of the spinner. Should load the selected profile.
@@ -97,6 +102,7 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
         EditText editTextSnow = (EditText) findViewById(R.id.editTextSnow);
         editTextSnow.setText(cursor.getInt(6));
 
+        cursor.close();
     }
 
     public void loadSelectedProfile(){
@@ -122,6 +128,7 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
             editTextSunscreen.setText(sunscreen);
             editTextSnow.setText(Integer.valueOf(snow).toString());
         }
+        cursor.close();
 
     }
 
@@ -180,6 +187,13 @@ public class Prefferences extends Activity implements AdapterView.OnItemSelected
             }
 
             database.execSQL("Update " + nimbusDB.TABLE_PROFILES + " Set " + nimbusDB.COLUMN_SELECTED  +" = 0 Where " + nimbusDB.COLUMN_SELECTED + " = 1 AND " + nimbusDB.COLUMN_PROFILE_NAME + " != '" + profile + "';");
+
+            try{
+                cursor.close();
+            }
+            catch (NullPointerException e){
+                Log.d(" ", "Null cursor");
+            }
 
             finish();
         }
