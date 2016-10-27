@@ -140,8 +140,8 @@ public class JSONParser {
             case 0: //take an umbrella
                 Bitmap umbrella = BitmapFactory.decodeResource(context.getResources(), R.drawable.umbrella_icon_large);
                 nb.setLargeIcon(umbrella);
-                nb.setContentTitle("Umbrella");
-                nb.setContentText("Be sure to pack an umbrella!");
+                nb.setContentTitle("Rain!");
+                nb.setContentText("Rain is near! Be sure to pack an umbrella!");
                 nb.setSmallIcon(R.drawable.umbrella_icon);
                 break;
             case 1: //put on a jacket
@@ -161,8 +161,8 @@ public class JSONParser {
             case 3: //put on a winter coat
                 Bitmap snow = BitmapFactory.decodeResource(context.getResources(), R.drawable.snow_icon_large);
                 nb.setLargeIcon(snow);
-                nb.setContentTitle("Coat");
-                nb.setContentText("It's cold outside! Wear a winter coat and maybe some gloves."); //TODO: change message
+                nb.setContentTitle("Snow");
+                nb.setContentText("It's snowing outside! Wear a winter coat and maybe some gloves."); //TODO: change message
                 nb.setSmallIcon(R.drawable.snow_icon);
                 break;
         }
