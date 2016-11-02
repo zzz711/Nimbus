@@ -28,6 +28,7 @@ import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.StringTokenizer;
 import java.util.TimeZone;
 
 import okhttp3.Call;
@@ -183,7 +184,7 @@ public class JSONParser {
         rainPercent = profileCursor.getInt(2);
         coatTemp = profileCursor.getInt(3);
         sunCond = profileCursor.getString(4);
-        snowCB = profileCursor.getInt(5);
+        snowPercent = profileCursor.getInt(5);
 
         rainCB = checkCursor.getInt(1);
         coatCB = checkCursor.getInt(2);

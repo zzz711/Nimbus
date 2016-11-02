@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
         }
 
         else {
-
+            Log.d("1", "1");
             //Intent weatherPing = new Intent(context, WeatherPing.class);
             //weatherPing.putExtra()
             WeatherPing ping = new WeatherPing(this);

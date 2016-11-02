@@ -37,7 +37,7 @@ public class WeatherPing extends Service implements LocationListener {
     protected LocationManager locationManager;
     private final Context currContext;
     private static final long MIN_TIME_BW_UPDATES = 12600000; //  3.5 hours
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10000; //10000 meter change
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; //10 meter change
     protected Location location;
     double latitude;
     double longitude;
@@ -150,6 +150,7 @@ public class WeatherPing extends Service implements LocationListener {
         getLocation();
        // parser.onCall(latitude, longitude, currContext);
         parser.onCall(latitude, longitude, currContext);
+
     }
 
 
@@ -160,7 +161,12 @@ public class WeatherPing extends Service implements LocationListener {
      */
     public Location getLocation() {
 //        Log.d("::", currContext.toString());
-        locationManager = (LocationManager) currContext.getSystemService(LOCATION_SERVICE);
+        try {
+            locationManager = (LocationManager) currContext.getSystemService(LOCATION_SERVICE);
+        }
+        catch (NullPointerException e){
+            Log.d("Ping:", "SystemService is null.");
+        }
        // locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
 
         boolean GPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -177,8 +183,7 @@ public class WeatherPing extends Service implements LocationListener {
 
         } else {
             try {
-                //not working because network provider doesn't exist. Try GPS
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
                         MIN_TIME_BW_UPDATES,
                         MIN_DISTANCE_CHANGE_FOR_UPDATES,
                         this);
