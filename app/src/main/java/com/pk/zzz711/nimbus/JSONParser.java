@@ -1,4 +1,4 @@
-package com.example.zzz711.nimbus;
+package com.pk.zzz711.nimbus;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -17,26 +17,16 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Time;
 import java.text.DateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.StringTokenizer;
 import java.util.TimeZone;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Headers;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * Created by zzz711 on 11/13/15.
@@ -70,7 +60,7 @@ public class JSONParser {
     public void onCall(double latitude, double longitude,Context c){
         context = c;
         String url = weatherUrl + apiKey + "&q="+ String.valueOf(latitude) + "," + String.valueOf(longitude) + "&num_of_days=2&tp=3&format=json";
-        Log.d("URL: ", url);
+       // Log.d("URL: ", url);
 
         readDB();
 

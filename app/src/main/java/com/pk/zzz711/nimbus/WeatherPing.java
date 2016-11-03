@@ -1,12 +1,10 @@
-package com.example.zzz711.nimbus;
+package com.pk.zzz711.nimbus;
 
 
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -19,11 +17,6 @@ import android.util.Log;
 
 import android.os.Bundle;
 import android.widget.Toast;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 
 /**
