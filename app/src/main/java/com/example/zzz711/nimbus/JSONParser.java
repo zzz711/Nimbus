@@ -143,28 +143,28 @@ public class JSONParser {
                 nb.setLargeIcon(umbrella);
                 nb.setContentTitle("Rain!");
                 nb.setContentText("Rain is near! Be sure to pack an umbrella!");
-                nb.setSmallIcon(R.drawable.umbrella_icon);
+                nb.setSmallIcon(R.drawable.umbrela_icon_borderless);
                 break;
             case 1: //put on a jacket
                 Bitmap coat = BitmapFactory.decodeResource(context.getResources(), R.drawable.coat_icon_large);
                 nb.setLargeIcon(coat);
                 nb.setContentTitle("Jacket");
                 nb.setContentText("It's chilly outside, so wear a jacket.");
-                nb.setSmallIcon(R.drawable.coat_icon);
+                nb.setSmallIcon(R.drawable.coat_icon_boarderless);
                 break;
             case 2: //put on sunscreen
                 Bitmap sunscreen = BitmapFactory.decodeResource(context.getResources(), R.drawable.sun_icon_large);
                 nb.setLargeIcon(sunscreen);
                 nb.setContentTitle("Sunscreen");
                 nb.setContentText("Put on sunscreen today!");
-                nb.setSmallIcon(R.drawable.sun_icon);
+                nb.setSmallIcon(R.drawable.sun_icon_borderless);
                 break;
             case 3: //put on a winter coat
                 Bitmap snow = BitmapFactory.decodeResource(context.getResources(), R.drawable.snow_icon_large);
                 nb.setLargeIcon(snow);
                 nb.setContentTitle("Snow");
                 nb.setContentText("It's snowing outside! Wear a winter coat and maybe some gloves."); //TODO: change message
-                nb.setSmallIcon(R.drawable.snow_icon);
+                nb.setSmallIcon(R.drawable.snow_icon_boarderless);
                 break;
         }
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
