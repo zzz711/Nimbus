@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25"
 
     defaultConfig {
-        applicationId "com.example.zzz711.nimbus"
+        applicationId "com.pk.zzz711.nimbus"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
