@@ -1,13 +1,16 @@
 package com.example.zzz711.nimbus;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 
 
@@ -17,18 +20,17 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Time;
+
 import java.text.DateFormat;
-import java.util.Arrays;
+
 import java.util.Calendar;
 import java.util.Date;
-import java.util.StringTokenizer;
+
 import java.util.TimeZone;
 
 import okhttp3.Call;
@@ -41,23 +43,23 @@ import okhttp3.Response;
 /**
  * Created by zzz711 on 11/13/15.
  */
-public class JSONParser {
+class JSONParser {
     String weatherUrl = "http://api.worldweatheronline.com/free/v2/weather.ashx?key=";
     private String apiKey = "9cbd89fade0170bb8102ed4296968"; //add, but don't commit key
-    Context context;
+    private Context context;
     private SQLiteDatabase database;
     private NimbusDB nimbusDB;
-    int rainPercent = 0;
-    int coatTemp = 0;
-    String sunCond = "";
-    int snowPercent = 0;
+    private int rainPercent = 0;
+    private int coatTemp = 0;
+    private String sunCond = "";
+    private int snowPercent = 0;
 
-    int rainCB = 0;
-    int coatCB = 0;
-    int sunCB = 0;
-    int snowCB = 0;
+    private int rainCB = 0;
+    private int coatCB = 0;
+    private int sunCB = 0;
+    private int snowCB = 0;
 
-    public JSONParser(){
+     JSONParser(){
         nimbusDB = Singleton.getInstance(context).getNimbusDB();
         database = nimbusDB.getReadableDatabase();
 
@@ -67,7 +69,7 @@ public class JSONParser {
     /*
     * method to set latitude and longitude variables
      */
-    public void onCall(double latitude, double longitude,Context c){
+    private void onCall(double latitude, double longitude,Context c){
         context = c;
         String url = weatherUrl + apiKey + "&q="+ String.valueOf(latitude) + "," + String.valueOf(longitude) + "&num_of_days=2&tp=3&format=json";
         Log.d("URL: ", url);
@@ -82,7 +84,7 @@ public class JSONParser {
     *Method to parse JSON
     * @param a string containing the JSON
      */
-    public void setJSON(String json){
+    private void setJSON(String json){
         try {
             JSONObject jsonObject = new JSONObject(json);
             String currHour = getTime(); // use currHour to get closest
@@ -135,40 +137,90 @@ public class JSONParser {
     *  method to create and push notifications to the user
     *  @param an integer indicating what notification to send
      */
-    public void buildNotification(int number){ //create notification
-        Notification.Builder nb = new Notification.Builder(context);
-        switch(number){
-            case 0: //take an umbrella
-                Bitmap umbrella = BitmapFactory.decodeResource(context.getResources(), R.drawable.umbrella_icon_large);
-                nb.setLargeIcon(umbrella);
-                nb.setContentTitle("Rain!");
-                nb.setContentText("Rain is near! Be sure to pack an umbrella!");
-                nb.setSmallIcon(R.drawable.umbrela_icon_borderless);
-                break;
-            case 1: //put on a jacket
-                Bitmap coat = BitmapFactory.decodeResource(context.getResources(), R.drawable.coat_icon_large);
-                nb.setLargeIcon(coat);
-                nb.setContentTitle("Jacket");
-                nb.setContentText("It's chilly outside, so wear a jacket.");
-                nb.setSmallIcon(R.drawable.coat_icon_boarderless);
-                break;
-            case 2: //put on sunscreen
-                Bitmap sunscreen = BitmapFactory.decodeResource(context.getResources(), R.drawable.sun_icon_large);
-                nb.setLargeIcon(sunscreen);
-                nb.setContentTitle("Sunscreen");
-                nb.setContentText("Put on sunscreen today!");
-                nb.setSmallIcon(R.drawable.sun_icon_borderless);
-                break;
-            case 3: //put on a winter coat
-                Bitmap snow = BitmapFactory.decodeResource(context.getResources(), R.drawable.snow_icon_large);
-                nb.setLargeIcon(snow);
-                nb.setContentTitle("Snow");
-                nb.setContentText("It's snowing outside! Wear a winter coat and maybe some gloves."); //TODO: change message
-                nb.setSmallIcon(R.drawable.snow_icon_boarderless);
-                break;
-        }
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(number, nb.build());
+     private void buildNotification(int number){ //create notification
+         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+         if(Build.VERSION.SDK_INT >= 26){
+             switch (number) {
+                 case 0: //take an umbrella
+                     Notification.Builder nbRain = new Notification.Builder(context.getApplicationContext(), "Nimbus_Rain");
+
+                     Bitmap umbrella = BitmapFactory.decodeResource(context.getResources(), R.drawable.umbrella_icon_large);
+                     nbRain.setLargeIcon(umbrella);
+                     nbRain.setContentTitle("Rain!");
+                     nbRain.setContentText("Rain is near! Be sure to pack an umbrella!");
+                     nbRain.setSmallIcon(R.drawable.umbrela_icon_borderless);
+
+                     notificationManager.notify(number, nbRain.build());
+                     break;
+
+                 case 1: //put on a jacket
+                     Notification.Builder nbTemp = new Notification.Builder(context.getApplicationContext(), "Nimbus_Rain");
+                     Bitmap coat = BitmapFactory.decodeResource(context.getResources(), R.drawable.coat_icon_large);
+                     nbTemp.setLargeIcon(coat);
+                     nbTemp.setContentTitle("Jacket");
+                     nbTemp.setContentText("It's chilly outside, so wear a jacket.");
+                     nbTemp.setSmallIcon(R.drawable.coat_icon_boarderless);
+
+                     notificationManager.notify(number, nbTemp.build());
+                     break;
+                 case 2: //put on sunscreen
+                     Notification.Builder nbSun = new Notification.Builder(context.getApplicationContext(), "Nimbus_Rain");
+                     Bitmap sunscreen = BitmapFactory.decodeResource(context.getResources(), R.drawable.sun_icon_large);
+                     nbSun.setLargeIcon(sunscreen);
+                     nbSun.setContentTitle("Sunscreen");
+                     nbSun.setContentText("Put on sunscreen today!");
+                     nbSun.setSmallIcon(R.drawable.sun_icon_borderless);
+
+                     notificationManager.notify(number, nbSun.build());
+                     break;
+
+                 case 3: //put on a winter coat
+                     Notification.Builder nbSnow = new Notification.Builder(context.getApplicationContext(), "Nimbus_Rain");
+                     Bitmap snow = BitmapFactory.decodeResource(context.getResources(), R.drawable.snow_icon_large);
+                     nbSnow.setLargeIcon(snow);
+                     nbSnow.setContentTitle("Snow");
+                     nbSnow.setContentText("It's snowing outside! Wear a winter coat and maybe some gloves."); //TODO: change message
+                     nbSnow.setSmallIcon(R.drawable.snow_icon_boarderless);
+
+                     notificationManager.notify(number, nbSnow.build());
+                     break;
+             }
+         }
+         else{
+             Notification.Builder nb = new Notification.Builder(context); //depricated in O (26)
+             switch (number) {
+                 case 0: //take an umbrella
+                     Bitmap umbrella = BitmapFactory.decodeResource(context.getResources(), R.drawable.umbrella_icon_large);
+                     nb.setLargeIcon(umbrella);
+                     nb.setContentTitle("Rain!");
+                     nb.setContentText("Rain is near! Be sure to pack an umbrella!");
+                     break;
+                 case 1: //put on a jacket
+                     Bitmap coat = BitmapFactory.decodeResource(context.getResources(), R.drawable.coat_icon_large);
+                     nb.setLargeIcon(coat);
+                     nb.setContentTitle("Jacket");
+                     nb.setContentText("It's chilly outside, so wear a jacket.");
+                     nb.setSmallIcon(R.drawable.coat_icon_boarderless);
+                     break;
+                 case 2: //put on sunscreen
+                     Bitmap sunscreen = BitmapFactory.decodeResource(context.getResources(), R.drawable.sun_icon_large);
+                     nb.setLargeIcon(sunscreen);
+                     nb.setContentTitle("Sunscreen");
+                     nb.setContentText("Put on sunscreen today!");
+                     nb.setSmallIcon(R.drawable.sun_icon_borderless);
+                     break;
+                 case 3: //put on a winter coat
+                     Bitmap snow = BitmapFactory.decodeResource(context.getResources(), R.drawable.snow_icon_large);
+                     nb.setLargeIcon(snow);
+                     nb.setContentTitle("Snow");
+                     nb.setContentText("It's snowing outside! Wear a winter coat and maybe some gloves."); //TODO: change message
+                     nb.setSmallIcon(R.drawable.snow_icon_boarderless);
+                     break;
+             }
+
+             notificationManager.notify(number, nb.build());
+         }
+
     }
 
     /*
@@ -190,6 +242,9 @@ public class JSONParser {
         coatCB = checkCursor.getInt(2);
         sunCB = checkCursor.getInt(3);
         snowCB = checkCursor.getInt(4);
+
+        profileCursor.close();
+        checkCursor.close();
     }
 
 
@@ -200,16 +255,6 @@ public class JSONParser {
         DateFormat dateFormat = DateFormat.getTimeInstance();
         dateFormat.setTimeZone(TimeZone.getTimeZone(timeZone));
         String time = dateFormat.format(new Date());
-
-//        String fullTime = time.substring(0, time.indexOf(":")) + time.substring(time.indexOf(":") + 1);
-//
-//        fullTime = time.substring(0, time.indexOf(":"));
-//
-//        int timeLen = fullTime.length();
-//
-//        String minutes = fullTime.substring(timeLen - 1, timeLen);
-//
-//        Log.d("mintues", minutes);
 
         String hour = time.subSequence(0, time.indexOf(":")).toString();
 
@@ -237,7 +282,7 @@ public class JSONParser {
         * constructor to set class variables
          * @param a string contain the web address for the api and an object of the JSONParser class
          */
-        public HttpAsyncTask(String address, JSONParser ping){
+        private HttpAsyncTask(String address, JSONParser ping){
             this.url = address;
             this.jsonParser = ping;
         }

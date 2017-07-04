@@ -3,6 +3,7 @@ package com.example.zzz711.nimbus;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.SyncStateContract;
@@ -45,23 +47,27 @@ public class MainActivity extends Activity {
 
 
 
-        checkUmbrella = (CheckBox) findViewById(R.id.checkUmbrella);
-        checkCoat = (CheckBox) findViewById(R.id.checkCoat);
-        checkSunscreen = (CheckBox) findViewById(R.id.checkSunscreen);
-        checkSnow = (CheckBox) findViewById(R.id.checkSnow);
+        checkUmbrella = findViewById(R.id.checkUmbrella);
+        checkCoat =  findViewById(R.id.checkCoat);
+        checkSunscreen = findViewById(R.id.checkSunscreen);
+        checkSnow =  findViewById(R.id.checkSnow);
 
         Context context = getApplicationContext();//not which sure context to get
         Singleton.getInstance(context).setNimbusDB();
         nimbusDB = Singleton.getInstance(context).getNimbusDB();
 
-        database = nimbusDB.getWritableDatabase();
-
-        if(database == null){
+        try {
+            database = nimbusDB.getWritableDatabase();
+        }
+        catch (NullPointerException e){
             nimbusDB.onCreate(database);
             database = nimbusDB.getWritableDatabase();
         }
 
         DBRead();
+
+        buildNotificationChannels(context);
+
 
         if(Build.VERSION.SDK_INT >= 23){
             //Log.v("Nimbus", "23+");
@@ -76,6 +82,77 @@ public class MainActivity extends Activity {
             ping.getLocation();
 
             //context.startService(weatherPing);
+        }
+    }
+
+    private void buildNotificationChannels(Context context){
+        buildRainChannel(context);
+        buildTempChannel(context);
+        buildSunChannel(context);
+        buildSnowChannel(context);
+    }
+
+    private void buildRainChannel(Context context){
+        if(Build.VERSION.SDK_INT >= 26) { //I don't like this, but until O becomes standard there's not much I can do
+            NotificationManager manager = (NotificationManager)  context.getSystemService(Context.NOTIFICATION_SERVICE);
+            String id = "Nimbus_Rain";
+            CharSequence name = "Rain";
+
+
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel rainChannel = new NotificationChannel(id, name, importance);
+            rainChannel.enableLights(true);
+            rainChannel.setLightColor(Color.GREEN);
+            rainChannel.enableVibration(true);
+            manager.createNotificationChannel(rainChannel);
+        }
+    }
+
+    private void buildTempChannel(Context context){
+        if(Build.VERSION.SDK_INT >= 26) { //I don't like this, but
+            NotificationManager manager = (NotificationManager)  context.getSystemService(Context.NOTIFICATION_SERVICE);
+            String id = "Nimbus_Rain";
+            CharSequence name = "Temperature";
+
+
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel rainChannel = new NotificationChannel(id, name, importance);
+            rainChannel.enableLights(true);
+            rainChannel.setLightColor(Color.GREEN);
+            rainChannel.enableVibration(true);
+            manager.createNotificationChannel(rainChannel);
+        }
+    }
+
+    private void buildSunChannel(Context context){
+        if(Build.VERSION.SDK_INT >= 26) { //I don't like this, but
+            NotificationManager manager = (NotificationManager)  context.getSystemService(Context.NOTIFICATION_SERVICE);
+            String id = "Nimbus_Rain";
+            CharSequence name = "Rain";
+
+
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel rainChannel = new NotificationChannel(id, name, importance);
+            rainChannel.enableLights(true);
+            rainChannel.setLightColor(Color.GREEN);
+            rainChannel.enableVibration(true);
+            manager.createNotificationChannel(rainChannel);
+        }
+    }
+
+    private void buildSnowChannel(Context context){
+        if(Build.VERSION.SDK_INT >= 26) { //I don't like this, but
+            NotificationManager manager = (NotificationManager)  context.getSystemService(Context.NOTIFICATION_SERVICE);
+            String id = "Nimbus_Rain";
+            CharSequence name = "Rain";
+
+
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel rainChannel = new NotificationChannel(id, name, importance);
+            rainChannel.enableLights(true);
+            rainChannel.setLightColor(Color.GREEN);
+            rainChannel.enableVibration(true);
+            manager.createNotificationChannel(rainChannel);
         }
     }
 
