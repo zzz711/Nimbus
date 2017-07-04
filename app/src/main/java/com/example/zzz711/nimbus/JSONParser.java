@@ -154,7 +154,7 @@ class JSONParser {
                      break;
 
                  case 1: //put on a jacket
-                     Notification.Builder nbTemp = new Notification.Builder(context.getApplicationContext(), "Nimbus_Rain");
+                     Notification.Builder nbTemp = new Notification.Builder(context.getApplicationContext(), "Nimbus_Temp");
                      Bitmap coat = BitmapFactory.decodeResource(context.getResources(), R.drawable.coat_icon_large);
                      nbTemp.setLargeIcon(coat);
                      nbTemp.setContentTitle("Jacket");
@@ -164,7 +164,7 @@ class JSONParser {
                      notificationManager.notify(number, nbTemp.build());
                      break;
                  case 2: //put on sunscreen
-                     Notification.Builder nbSun = new Notification.Builder(context.getApplicationContext(), "Nimbus_Rain");
+                     Notification.Builder nbSun = new Notification.Builder(context.getApplicationContext(), "Nimbus_Sun");
                      Bitmap sunscreen = BitmapFactory.decodeResource(context.getResources(), R.drawable.sun_icon_large);
                      nbSun.setLargeIcon(sunscreen);
                      nbSun.setContentTitle("Sunscreen");
@@ -175,7 +175,7 @@ class JSONParser {
                      break;
 
                  case 3: //put on a winter coat
-                     Notification.Builder nbSnow = new Notification.Builder(context.getApplicationContext(), "Nimbus_Rain");
+                     Notification.Builder nbSnow = new Notification.Builder(context.getApplicationContext(), "Nimbus_Snow");
                      Bitmap snow = BitmapFactory.decodeResource(context.getResources(), R.drawable.snow_icon_large);
                      nbSnow.setLargeIcon(snow);
                      nbSnow.setContentTitle("Snow");

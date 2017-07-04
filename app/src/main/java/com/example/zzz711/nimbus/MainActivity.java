@@ -27,6 +27,8 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 
+//TODO: rewrite app in kotlin
+
 public class MainActivity extends Activity {
     CheckBox checkUmbrella, checkCoat, checkSunscreen, checkSnow;
     int umbrellaBool = 1;
@@ -104,6 +106,7 @@ public class MainActivity extends Activity {
             rainChannel.enableLights(true);
             rainChannel.setLightColor(Color.GREEN);
             rainChannel.enableVibration(true);
+            rainChannel.setShowBadge(true);
             manager.createNotificationChannel(rainChannel);
         }
     }
@@ -111,48 +114,48 @@ public class MainActivity extends Activity {
     private void buildTempChannel(Context context){
         if(Build.VERSION.SDK_INT >= 26) { //I don't like this, but
             NotificationManager manager = (NotificationManager)  context.getSystemService(Context.NOTIFICATION_SERVICE);
-            String id = "Nimbus_Rain";
+            String id = "Nimbus_Temp";
             CharSequence name = "Temperature";
 
 
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel rainChannel = new NotificationChannel(id, name, importance);
-            rainChannel.enableLights(true);
-            rainChannel.setLightColor(Color.GREEN);
-            rainChannel.enableVibration(true);
-            manager.createNotificationChannel(rainChannel);
+            NotificationChannel tempChannel = new NotificationChannel(id, name, importance);
+            tempChannel.enableLights(true);
+            tempChannel.setLightColor(Color.GREEN);
+            tempChannel.enableVibration(true);
+            manager.createNotificationChannel(tempChannel);
         }
     }
 
     private void buildSunChannel(Context context){
         if(Build.VERSION.SDK_INT >= 26) { //I don't like this, but
             NotificationManager manager = (NotificationManager)  context.getSystemService(Context.NOTIFICATION_SERVICE);
-            String id = "Nimbus_Rain";
-            CharSequence name = "Rain";
+            String id = "Nimbus_Sun";
+            CharSequence name = "Sunny";
 
 
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel rainChannel = new NotificationChannel(id, name, importance);
-            rainChannel.enableLights(true);
-            rainChannel.setLightColor(Color.GREEN);
-            rainChannel.enableVibration(true);
-            manager.createNotificationChannel(rainChannel);
+            NotificationChannel sunChannel = new NotificationChannel(id, name, importance);
+            sunChannel.enableLights(true);
+            sunChannel.setLightColor(Color.GREEN);
+            sunChannel.enableVibration(true);
+            manager.createNotificationChannel(sunChannel);
         }
     }
 
     private void buildSnowChannel(Context context){
         if(Build.VERSION.SDK_INT >= 26) { //I don't like this, but
             NotificationManager manager = (NotificationManager)  context.getSystemService(Context.NOTIFICATION_SERVICE);
-            String id = "Nimbus_Rain";
-            CharSequence name = "Rain";
+            String id = "Nimbus_Snow";
+            CharSequence name = "Snow";
 
 
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel rainChannel = new NotificationChannel(id, name, importance);
-            rainChannel.enableLights(true);
-            rainChannel.setLightColor(Color.GREEN);
-            rainChannel.enableVibration(true);
-            manager.createNotificationChannel(rainChannel);
+            NotificationChannel snowChannel = new NotificationChannel(id, name, importance);
+            snowChannel.enableLights(true);
+            snowChannel.setLightColor(Color.GREEN);
+            snowChannel.enableVibration(true);
+            manager.createNotificationChannel(snowChannel);
         }
     }
 
